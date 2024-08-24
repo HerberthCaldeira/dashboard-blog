@@ -48,3 +48,13 @@ export default tseslint.config({
   },
 })
 ```
+
+3 tipos de páginas
+1. para guest and auth
+2. para auth e redirecionar se for guest
+3. para guest e redirecionar se for auth
+
+
+### useAuth
+
+middleware determina se a page é para guest ou auth e fornece funções para gerenciar logins
