@@ -1,6 +1,6 @@
 import MenuItem from "./MenuItem";
 
-export default function Menu() {
+export default function Index() {
   return (
     <>
       <ul>
@@ -8,7 +8,10 @@ export default function Menu() {
           <MenuItem label={"Dasboard"} route={"/dashboard"} />
         </li>
         <li>
-          <MenuItem label={"Category"} route={"/dashboard/category"} />
+          <MenuItem label={"Categories"} route={"/dashboard/category"} />
+        </li>
+        <li>
+          <MenuItem label={"Posts"} route={"/dashboard/posts"} />
         </li>
       </ul>
     </>

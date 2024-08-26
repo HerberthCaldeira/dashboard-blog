@@ -1,31 +1,43 @@
-import { useForm } from "react-hook-form";
-import { usePostCategory } from "../../../../actions/category/usePostCategory";
+import { FormProvider, useForm } from "react-hook-form";
+import usePostCategory from "../../../../actions/category/usePostCategory";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { zodSchema } from "./zodSchema";
+import Input from "../../../components/Form/Fields/Input";
 
 export default function NewCatagory() {
+  const methods = useForm({ resolver: zodResolver(zodSchema) });
+
   const {
-    register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(zodSchema) });
+  } = methods;
 
-  const { mutate } = usePostCategory();
+  const { mutate, error: serverErrors } = usePostCategory();
+
+  console.log("serverErrors", serverErrors);
 
   const onSubmit = (data) => {
     console.log("onSubmit", data);
     mutate(data);
   };
+
   return (
     <>
       <div>NewCatagory</div>
       <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input {...register("name")} />
-          {errors.name && errors.name?.message}
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              name={"name"}
+              label={"nome"}
+              type={"text"}
+              frontErrors={errors}
+              serverErrors={serverErrors}
+            />
 
-          <button type="submit"> SUBMIT </button>
-        </form>
+            <button type="submit"> SUBMIT </button>
+          </form>
+        </FormProvider>
       </div>
     </>
   );

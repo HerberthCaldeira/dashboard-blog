@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Table from "./table/table";
 import useGetCategory from "../../../actions/category/useGetCategory";
+import Table from "./components/table/table";
 
-export default function Category() {
+export default function Index() {
   const { data } = useGetCategory();
 
   return (

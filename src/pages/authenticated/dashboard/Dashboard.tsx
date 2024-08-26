@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../../../actions/auth/useAuth";
-import Menu from "./components/Menu";
+import Menu from "./components/menu/Index";
 
 export default function Dashboard() {
   const { user, logout } = useAuth({
