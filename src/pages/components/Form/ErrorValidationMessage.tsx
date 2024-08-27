@@ -1,28 +1,21 @@
-import { FieldTypeErrors } from "./Fields/types/fieldsTypes";
+import { FieldErrors } from "react-hook-form";
 
-interface ErrorValidationMessageProps extends FieldTypeErrors {
+interface ErrorValidationMessageProps {
   field: string;
+  errors?: FieldErrors;
 }
 
 export default function ErrorValidationMessage({
-  frontErrors,
-  serverErrors,
+  errors,
   field,
 }: ErrorValidationMessageProps) {
-  console.log("ErrorValidation", frontErrors, serverErrors, field);
-  let msg: string | null = null;
+  console.log("ErrorValidationMessage", errors);
 
-  if (
-    (!frontErrors || Object.keys(frontErrors).length === 0) &&
-    (!serverErrors || Object.keys(serverErrors).length === 0)
-  ) {
+  if (!errors || Object.keys(errors).length === 0) {
     return null;
   }
 
-  if (frontErrors?.[field]?.message) msg = frontErrors[field].message;
+  const msg = errors?.[field]?.message || null;
 
-  if (serverErrors?.response?.data?.errors[field] && msg === null)
-    msg = serverErrors?.response?.data?.errors[field][0];
-
-  return <div>{msg}</div>;
+  return msg ? <div>{msg}</div> : null;
 }

@@ -1,9 +1,11 @@
-import { AxiosError } from "axios";
 import { FieldErrors } from "react-hook-form";
 
-interface FieldTypeErrors {
-  frontErrors?: FieldErrors;
-  serverErrors?: AxiosError | Error | null;
+interface InputProps {
+  name: string;
+  label: string;
+  type?: "text" | "email" | "time" | "password";
+  placeholder?: string;
+  errors?: FieldErrors;
 }
 
-export type { FieldTypeErrors };
+export type { InputProps };

@@ -1,21 +1,13 @@
 import { useFormContext } from "react-hook-form";
-import { FieldTypeErrors } from "./types/fieldsTypes";
+import { InputProps } from "./types/fieldsTypes";
 import ErrorValidationMessage from "../ErrorValidationMessage";
 
-interface InputProps extends FieldTypeErrors {
-  name: string;
-  label: string;
-  type?: "text" | "email" | "time" | "password";
-  placeholder?: string;
-}
-
 export default function Input({
+  name,
   label,
   type,
-  name,
   placeholder,
-  frontErrors,
-  serverErrors,
+  errors,
 }: InputProps) {
   const { register } = useFormContext();
 
@@ -25,11 +17,7 @@ export default function Input({
         {label}
       </label>
       <input type={type} placeholder={placeholder} {...register(name)} />
-      <ErrorValidationMessage
-        frontErrors={frontErrors}
-        serverErrors={serverErrors}
-        field="name"
-      />
+      <ErrorValidationMessage errors={errors} field="name" />
     </div>
   );
 }

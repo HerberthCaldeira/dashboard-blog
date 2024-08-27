@@ -7,5 +7,5 @@ const zodSchema = z.object({
     .max(255, { message: "Máximo 255" }),
 });
 
-export type TCategoryFormType = z.infer<typeof zodSchema>;
+export type TCategoryFormFields = z.infer<typeof zodSchema>;
 export { zodSchema };
