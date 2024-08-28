@@ -1,6 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { InputProps } from "./types/fieldsTypes";
-import ErrorValidationMessage from "../ErrorValidationMessage";
+
+import { ErrorMessage } from "@hookform/error-message";
 
 export default function Input({
   name,
@@ -17,7 +18,8 @@ export default function Input({
         {label}
       </label>
       <input type={type} placeholder={placeholder} {...register(name)} />
-      <ErrorValidationMessage errors={errors} field="name" />
+
+      <ErrorMessage errors={errors} name={name} />
     </div>
   );
 }

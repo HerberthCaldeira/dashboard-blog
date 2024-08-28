@@ -9,7 +9,7 @@ export default function ErrorValidationMessage({
   errors,
   field,
 }: ErrorValidationMessageProps) {
-  console.log("ErrorValidationMessage", errors);
+  console.log("ErrorValidationMessage", errors, field, errors?.[field]);
 
   if (!errors || Object.keys(errors).length === 0) {
     return null;

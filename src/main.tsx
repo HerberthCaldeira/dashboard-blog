@@ -1,6 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useRouteError,
+} from "react-router-dom";
 import Home from "./pages/home/Home";
 import ErrorPage from "./pages/Error";
 import Login from "./pages/login/Login";
@@ -10,6 +14,17 @@ import Category from "./pages/authenticated/category/Index";
 import NewCatagory from "./pages/authenticated/category/new/NewCatagory";
 import Posts from "./pages/authenticated/post/Index";
 import NewPost from "./pages/authenticated/post/new/NewPost";
+
+const Fallback = () => {
+  const error = useRouteError();
+  console.log(error);
+
+  return (
+    <div>
+      <p>React router Error Boundary</p>
+    </div>
+  );
+};
 
 //TODO: move routes to a another file
 const router = createBrowserRouter([
@@ -25,6 +40,7 @@ const router = createBrowserRouter([
   {
     path: "dashboard",
     element: <Dashboard />,
+    errorElement: <Fallback />,
     children: [
       {
         path: "category",
@@ -48,7 +64,15 @@ const router = createBrowserRouter([
 ]);
 
 // Create a client
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    mutations: {
+      onError: (err) => {
+        console.log("global react query", err);
+      },
+    },
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

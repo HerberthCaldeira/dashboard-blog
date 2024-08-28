@@ -8,4 +8,15 @@ interface InputProps {
   errors?: FieldErrors;
 }
 
-export type { InputProps };
+interface SelectProps extends InputProps {
+  options: {
+    value: string;
+    label: string;
+  }[];
+}
+
+interface ReactSelectProps extends SelectProps {
+  isMulti: boolean;
+}
+
+export type { InputProps, SelectProps, ReactSelectProps };

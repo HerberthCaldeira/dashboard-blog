@@ -20,7 +20,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("useAuth::getUser");
+    //console.log("useAuth::getUser");
     const fetchUser = async () => {
       try {
         const userData = await getLoggedUser();
@@ -37,7 +37,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
   }, []);
 
   useEffect(() => {
-    console.log("useAuth::checkForRedirect");
+    //console.log("useAuth::checkForRedirect");
     if (middleware === "guest" && redirectIfAuthenticated && user) {
       navigate(redirectIfAuthenticated);
     }

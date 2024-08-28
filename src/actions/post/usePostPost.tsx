@@ -1,25 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "../../lib/axios/axios";
 
-const postRequest = async (data) => {
-  try {
-    const response = await axios.post("/api/post/store", data);
-    return response.data;
-  } catch (err) {
-    console.log("catch::", err);
-    throw err; // need to throw or onError will fail
-  }
-};
+import { postRequest } from "../../lib/axios/requests";
 
 export default function usePostPost() {
   const { mutate, error, isError, isPending } = useMutation({
-    mutationFn: (data) => postRequest(data),
-    onSuccess: () => {
-      //queryClient.invalidateQueries({ queryKey:  });
-    },
-    onError: (error) => {
-      //console.log("onError::", error?.response?.data?.errors);
-    },
+    mutationFn: async (data) => await postRequest("/api/post/store", data),
   });
 
   return {
