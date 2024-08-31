@@ -14,10 +14,11 @@ import Category from "./pages/authenticated/category/Index";
 import NewCatagory from "./pages/authenticated/category/new/NewCatagory";
 import Posts from "./pages/authenticated/post/Index";
 import NewPost from "./pages/authenticated/post/new/NewPost";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
 
 const Fallback = () => {
   const error = useRouteError();
-  console.log(error);
+  console.log("Fallback", error);
 
   return (
     <div>
@@ -66,6 +67,9 @@ const router = createBrowserRouter([
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
+    queries: {
+      staleTime: 10000,
+    },
     mutations: {
       onError: (err) => {
         console.log("global react query", err);
@@ -77,6 +81,7 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <RouterProvider router={router} />
     </QueryClientProvider>
   </StrictMode>,

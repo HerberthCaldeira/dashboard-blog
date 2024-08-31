@@ -4,8 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TCategoryFormFields, zodSchema } from "./zodSchema";
 import Input from "../../../components/Form/Fields/Input";
 import { AxiosError } from "axios";
+import { useQueryClient } from "@tanstack/react-query";
+import { categoryKeys } from "../../../../actions/category/queryKeys";
 
 export default function NewCatagory() {
+  const queryClient = useQueryClient();
+
   const methods = useForm<TCategoryFormFields>({
     defaultValues: { name: "" },
     resolver: zodResolver(zodSchema),
@@ -27,7 +31,7 @@ export default function NewCatagory() {
         console.log("onSuccess");
         reset();
         // Invalidate and refetch
-        //queryClient.invalidateQueries({ queryKey:  });
+        queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       },
       onError: (err) => {
         if (err instanceof AxiosError && err?.response.status === 422) {

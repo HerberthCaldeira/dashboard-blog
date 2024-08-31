@@ -6,8 +6,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../../components/Form/Fields/Input";
 import { AxiosError } from "axios";
 import { ReactSelectInput } from "../../../components/Form/Fields/select/ReactSelectInput";
+import { postQKeys } from "../../../../actions/post/queryKeys";
+import { useQueryClient } from "@tanstack/react-query";
+import Tiptap from "../../../components/Form/Editor/TipTap";
+import { useState } from "react";
+import useGetCategoryForSelectField from "../../../../actions/category/useGetCategoryForSelectField";
 
 export default function NewPost() {
+  /** state for send taptip content */
+  const [tapTipContent, setTapTipContent] = useState<string>("");
+
+  const queryClient = useQueryClient();
+
+  let { isPending: isPendingGetCategories, data: categories } =
+    useGetCategoryForSelectField();
+
+  console.log(categories);
+
   const methods = useForm<TPostFormFields>({
     resolver: zodResolver(zodSchema),
   });
@@ -16,10 +31,14 @@ export default function NewPost() {
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = methods;
 
   const { mutate } = usePostPost();
+
+  const setContentField = (html: string): void => {
+    setTapTipContent(html);
+  };
 
   const onSubmit: SubmitHandler<TPostFormFields> = (data) => {
     const formData = new FormData();
@@ -32,12 +51,14 @@ export default function NewPost() {
       formData.set(key, data[key]);
     }
 
+    formData.set("content", tapTipContent);
+
     mutate(formData, {
       onSuccess: () => {
         console.log("onSuccess");
         reset();
-        // Invalidate and refetch
-        //queryClient.invalidateQueries({ queryKey:  });
+        //Invalidate and refetch
+        queryClient.invalidateQueries({ queryKey: postQKeys.all });
       },
       onError: (err) => {
         console.log("onError: server error");
@@ -75,6 +96,7 @@ export default function NewPost() {
                 type="text"
                 errors={errors}
               />
+              <Tiptap fnForSetValue={setContentField} />
             </div>
             <div>
               <ReactSelectInput
@@ -82,23 +104,12 @@ export default function NewPost() {
                 name="category_id"
                 label="Category"
                 errors={errors}
-                options={[
-                  {
-                    value: "1",
-                    label: "1",
-                  },
-                  {
-                    value: "2",
-                    label: "2",
-                  },
-                  {
-                    value: "3",
-                    label: "3",
-                  },
-                ]}
+                options={categories?.data}
               />
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
           </form>
         </FormProvider>
       </div>

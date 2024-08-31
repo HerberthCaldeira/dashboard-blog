@@ -20,8 +20,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //console.log("useAuth::getUser");
     const fetchUser = async () => {
+      console.log("useAuth::getUser::fetchUser");
       try {
         const userData = await getLoggedUser();
         setUser(userData);

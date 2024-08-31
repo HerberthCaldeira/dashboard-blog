@@ -4,7 +4,10 @@ interface ErrorValidationMessageProps {
   field: string;
   errors?: FieldErrors;
 }
-
+/**
+ * @deprecated
+ * new:: import { ErrorMessage } from "@hookform/error-message"
+ */
 export default function ErrorValidationMessage({
   errors,
   field,

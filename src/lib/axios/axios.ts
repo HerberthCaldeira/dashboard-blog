@@ -13,9 +13,17 @@ axios.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     console.log("axios interceptors", error);
-    // if (axios.isCancel(error)) {
-    //   window.console.log('Request canceled', error.message);
-    // }
+    if (
+      error instanceof AxiosError &&
+      (error?.response.status === 419 || error?.response.status === 401)
+    ) {
+      window.console.log("Request canceled ::", error.message);
+
+      window.history.pushState({}, "", "/login");
+      // communicate to Routes that URL has changed
+      const navEvent = new PopStateEvent("popstate");
+      window.dispatchEvent(navEvent);
+    }
 
     return Promise.reject(error);
   },

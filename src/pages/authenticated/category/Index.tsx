@@ -3,7 +3,11 @@ import useGetCategory from "../../../actions/category/useGetCategory";
 import Table from "./components/table/table";
 
 export default function Index() {
-  const { data } = useGetCategory();
+  const { data, isError, error } = useGetCategory();
+
+  if (isError) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
 
   return (
     <div>

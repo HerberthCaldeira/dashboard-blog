@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { categoryKeys } from "./queryKeys";
+import { postQKeys } from "./queryKeys";
 import { getRequest } from "../../lib/axios/requests";
 
-const useGetCategory = () => {
+export default function useGetPost() {
   const { data, error, isError, isPending } = useQuery({
-    queryKey: categoryKeys.all,
-    queryFn: async () => await getRequest("/api/category"),
+    queryKey: postQKeys.all,
+    queryFn: async () => await getRequest("/api/post"),
   });
 
   return {
@@ -14,6 +14,4 @@ const useGetCategory = () => {
     isError,
     isPending,
   };
-};
-
-export default useGetCategory;
+}

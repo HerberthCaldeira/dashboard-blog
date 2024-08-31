@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryKeys } from "./queryKeys";
 import { getRequest } from "../../lib/axios/requests";
 
-const useGetCategory = () => {
+const useGetCategoryForSelectField = () => {
   const { data, error, isError, isPending } = useQuery({
-    queryKey: categoryKeys.all,
-    queryFn: async () => await getRequest("/api/category"),
+    queryKey: categoryKeys.select,
+    queryFn: async () => await getRequest("/api/category/select"),
   });
 
   return {
@@ -16,4 +16,4 @@ const useGetCategory = () => {
   };
 };
 
-export default useGetCategory;
+export default useGetCategoryForSelectField;
