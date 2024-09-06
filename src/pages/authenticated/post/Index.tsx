@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import useGetPost from "../../../actions/post/useGetPost";
-import Table from "../category/components/table/table";
+import Table from "../category/components/table/Table";
 
 export default function Index() {
   const { data, error, isError, isPending } = useGetPost();

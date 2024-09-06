@@ -2,7 +2,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import usePostCategory from "../../../../actions/category/usePostCategory";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TCategoryFormFields, zodSchema } from "./zodSchema";
-import Input from "../../../components/Form/Fields/Input";
+import Input from "../../../components/form/fields/Input";
 import { AxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { categoryKeys } from "../../../../actions/category/queryKeys";

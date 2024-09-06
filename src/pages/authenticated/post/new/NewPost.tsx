@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import usePostPost from "../../../../actions/post/usePostPost";
 import { TPostFormFields, zodSchema } from "./zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "../../../components/Form/Fields/Input";
+import Input from "../../../components/form/fields/Input";
 import { AxiosError } from "axios";
-import { ReactSelectInput } from "../../../components/Form/Fields/select/ReactSelectInput";
+import { ReactSelectInput } from "../../../components/form/fields/select/ReactSelectInput";
 import { postQKeys } from "../../../../actions/post/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
-import Tiptap from "../../../components/Form/Editor/TipTap";
+import Tiptap from "../../../components/form/editor/TipTap";
 import { useState } from "react";
 import useGetCategoryForSelectField from "../../../../actions/category/useGetCategoryForSelectField";
 

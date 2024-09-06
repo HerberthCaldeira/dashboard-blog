@@ -1,4 +1,4 @@
 export const categoryKeys = {
-  all: ["category"],
+  paginate: (page: number, search: string) => ["category", page, search],
   select: ["category", "select"],
 };
