@@ -15,7 +15,7 @@ axios.interceptors.response.use(
     console.log("axios interceptors", error);
     if (
       error instanceof AxiosError &&
-      (error?.response.status === 419 || error?.response.status === 401)
+      (error?.response?.status === 419 || error?.response?.status === 401)
     ) {
       window.console.log("Request canceled ::", error.message);
 
