@@ -5,6 +5,7 @@ interface InputProps {
   label: string;
   type?: "text" | "email" | "time" | "password";
   placeholder?: string;
+  className?: string;
   errors?: FieldErrors;
 }
 

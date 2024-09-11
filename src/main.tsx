@@ -15,6 +15,8 @@ import NewCatagory from "./pages/authenticated/category/new/NewCatagory";
 import Posts from "./pages/authenticated/post/Index";
 import NewPost from "./pages/authenticated/post/new/NewPost";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
+import "./index.css";
+import App from "./App";
 
 const Fallback = () => {
   const error = useRouteError();
@@ -83,6 +85,8 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <RouterProvider router={router} />
+
+      <App />
     </QueryClientProvider>
   </StrictMode>,
 );

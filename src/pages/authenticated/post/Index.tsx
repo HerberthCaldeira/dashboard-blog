@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import useGetPost from "../../../actions/post/useGetPost";
-import Table from "../category/components/table/Table";
 
 export default function Index() {
   const { data, error, isError, isPending } = useGetPost();
@@ -12,8 +11,6 @@ export default function Index() {
   return (
     <div>
       <Link to={"/dashboard/posts/new"}>New</Link>
-
-      <Table data={data} />
     </div>
   );
 }

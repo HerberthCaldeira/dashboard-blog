@@ -18,6 +18,9 @@ react form hook + zod
 <ErrorValidationMessage />
 
 Consegue printar errors de validação do front e do backend
+------------------------------------------------------------------------------------
+Input: shadcn
+MyInput: para forms
 
 
 

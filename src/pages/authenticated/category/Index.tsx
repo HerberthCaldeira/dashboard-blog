@@ -1,15 +1,16 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import useGetCategory from "../../../actions/category/useGetCategory";
-import Table from "./components/table/Table";
-import Paginate from "../../components/form/paginate/Paginate";
+import Paginate from "../../components/paginate/Index";
 import { useCallback, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce";
+import Table from "./components/table/Index";
+import { CreateButton } from "@/pages/components/buttons/CreateButton";
+import { Input } from "@/components/ui/input";
 
 export default function Index() {
-  console.log("render categ index");
+  console.log("category index");
 
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [searchInput, setSearchInput] = useState(""); // controlled
   const [search, setSearch] = useState(""); // value after debounced
 
@@ -28,33 +29,29 @@ export default function Index() {
     handleSearchDebounce(e);
   };
 
-  const page = searchParams.get("page")
-    ? parseInt(searchParams.get("page"))
-    : 1;
+  const page = searchParams.get("page") ? searchParams.get("page") : 1;
 
   const { data, isError, error } = useGetCategory({ page, search });
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
   }
-  // <pre>{JSON.stringify(data, null, 2)}</pre>
+
   return (
-    <div>
-      <div>
-        Category {page} || {searchParams.get("page")}
+    <div className="container mx-auto">
+      <div className="flex">
+        <Input
+          placeholder="SEARCH"
+          name="search"
+          value={searchInput}
+          type="text"
+          onChange={handlerChange}
+        />
+        <div className="ml-auto">
+          <CreateButton to={"/dashboard/category/new"}>new</CreateButton>
+        </div>
       </div>
-      <div>
-        <Link to={"/dashboard/category/new"}>New</Link>
-      </div>
-      <label htmlFor="search">SEARCH</label>
-      <input
-        name="search"
-        value={searchInput}
-        type="text"
-        onChange={handlerChange}
-      />{" "}
-      {search}
-      <Table data={data} />
+      <Table data={data?.data} />
       <Paginate data={data} />
     </div>
   );
