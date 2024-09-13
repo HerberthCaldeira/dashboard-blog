@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Home from "./pages/home/Home";
 import ErrorPage from "./pages/Error";
-import Login from "./pages/login/Login";
+import Login from "./pages/login/Index";
 import Dashboard from "./pages/authenticated/dashboard/Dashboard";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Category from "./pages/authenticated/category/Index";
@@ -17,6 +17,7 @@ import NewPost from "./pages/authenticated/post/new/NewPost";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
 import "./index.css";
 import App from "./App";
+import EditFormCategory from "./pages/authenticated/category/edit/EditFormCategory";
 
 const Fallback = () => {
   const error = useRouteError();
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "category/new",
         element: <NewCatagory />,
+      },
+      {
+        path: "category/:id/edit",
+        element: <EditFormCategory />,
       },
       {
         path: "posts",

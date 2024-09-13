@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "../../lib/axios/axios";
-import { TCategoryFormFields } from "../../pages/authenticated/category/new/zodSchema";
+import { TCategoryFormFields } from "../../pages/authenticated/category/schemas/zodSchema";
 
 const postRequest = async (data: TCategoryFormFields) => {
   // eslint-disable-next-line no-useless-catch

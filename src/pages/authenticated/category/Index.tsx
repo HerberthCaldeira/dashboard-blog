@@ -29,7 +29,7 @@ export default function Index() {
     handleSearchDebounce(e);
   };
 
-  const page = searchParams.get("page") ? searchParams.get("page") : 1;
+  const page = searchParams.has("page") ? searchParams.get("page") : 1;
 
   const { data, isError, error } = useGetCategory({ page, search });
 

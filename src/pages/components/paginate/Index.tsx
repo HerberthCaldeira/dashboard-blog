@@ -19,8 +19,6 @@ export default function Index({ data }) {
     ? location.pathname + "?" + data?.links?.next?.split("?")[1]
     : "";
 
-  console.log(prev, next);
-
   return (
     <Pagination>
       <PaginationContent>
@@ -53,7 +51,6 @@ export default function Index({ data }) {
                 onClick={() => {
                   searchParams.set("page", link.label);
                   setSearchParams(searchParams);
-                  return;
                 }}
               >
                 {link.label}

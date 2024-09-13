@@ -16,7 +16,7 @@ const getLoggedUser = async () => {
 
 export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
   const [user, setUser] = useState(null); // Estado para armazenar o usuário
-  const [error, setError] = useState<typeAuthError>(null); // Estado para armazenar o erros
+  const [error, setError] = useState<typeAuthError>(null); // Estado para armazenar os erros
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
     }
   }, [user, error]);
 
-  const login = async (data: credentials) => {
+  const login = async (data: credentials, setError: () => void) => {
     await csrf();
 
     // eslint-disable-next-line no-useless-catch
@@ -57,7 +57,16 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
       await axios.post("/api/login", data);
       navigate("/dashboard");
     } catch (err) {
-      throw err;
+      if (err?.response.status !== 422) throw err;
+
+      const serverErrors = err?.response.data.errors;
+
+      for (const key in serverErrors) {
+        setError(key, {
+          type: "serverError",
+          message: serverErrors[key][0],
+        });
+      }
     }
   };
 

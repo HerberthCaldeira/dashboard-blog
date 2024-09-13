@@ -14,7 +14,7 @@ export default function MyInput({
   className,
 }: InputProps) {
   const { register } = useFormContext();
-  console.log(errors);
+  console.log("MyInput::errors", errors);
 
   return (
     <div>
