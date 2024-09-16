@@ -40,7 +40,7 @@ export default function Index({ data }) {
           }
 
           if (!link?.url) {
-            return link.label;
+            return <PaginationEllipsis />;
           }
 
           return (

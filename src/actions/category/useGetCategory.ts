@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { categoryKeys } from "./queryKeys";
 import { getRequest } from "../../lib/axios/requests";
 
@@ -17,6 +17,7 @@ const useGetCategory = ({ page, search }: IParams) => {
           search,
         },
       }),
+    placeholderData: keepPreviousData,
   });
 
   return {

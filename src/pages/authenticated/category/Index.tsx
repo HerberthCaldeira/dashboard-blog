@@ -1,58 +1,165 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+} from "@tanstack/react-table";
+import useGetCategory from "@/actions/category/useGetCategory";
 import { useSearchParams } from "react-router-dom";
-import useGetCategory from "../../../actions/category/useGetCategory";
-import Paginate from "../../components/paginate/Index";
-import { useCallback, useState } from "react";
-import useDebounce from "../../../hooks/useDebounce";
-import Table from "./components/table/Index";
-import { CreateButton } from "@/pages/components/buttons/CreateButton";
-import { Input } from "@/components/ui/input";
+import Pagination from "@/pages/components/tanStackTable/paginate/Index";
+import { handlePageQueryString } from "@/lib/utils";
+import useDebounce from "@/hooks/useDebounce";
 
 export default function Index() {
-  console.log("category index");
-
+  console.log("table render");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(""); // controlled
-  const [search, setSearch] = useState(""); // value after debounced
 
-  const handleSearchDebounce = useCallback(
+  const [data, setData] = useState([]);
+
+  const [pagination, setPagination] = useState({
+    pageIndex: handlePageQueryString(searchParams.get("page")),
+    pageSize: 15,
+  });
+
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [vSearch, setVsearch] = useState("");
+
+  const dbfs = useCallback(
     useDebounce((e) => {
-      console.log("handleSearchDebounce");
-      setSearch(e.target.value);
+      setGlobalFilter(e);
     }, 500),
     [],
   );
 
-  const handlerChange = (e) => {
-    searchParams.set("search", e.target.value);
-    setSearchParams(searchParams);
-    setSearchInput(e.target.value);
-    handleSearchDebounce(e);
+  const handlerSearch = (e) => {
+    setVsearch(e);
+    dbfs(e);
   };
 
-  const page = searchParams.has("page") ? searchParams.get("page") : 1;
+  const {
+    data: apiResponse,
+    isError,
+    error,
+  } = useGetCategory({ page: pagination.pageIndex, search: globalFilter });
 
-  const { data, isError, error } = useGetCategory({ page, search });
+  useEffect(() => {
+    setData(apiResponse?.data);
+  }, [apiResponse]);
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
   }
 
+  const columns = useMemo(
+    () => [
+      {
+        header: "ID",
+        accessorKey: "id",
+        cell: ({ cell, row }) => {
+          return (
+            <div>
+              <strong>{row.original.id}</strong>
+            </div>
+          );
+        },
+      },
+      {
+        header: "Name",
+        accessorKey: "name",
+      },
+    ],
+    [],
+  );
+
+  const defaultData = useMemo(() => [], []);
+
+  const table = useReactTable({
+    data: data ?? defaultData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+
+    state: {
+      pagination,
+      globalFilter,
+    },
+
+    manualFiltering: true,
+    onGlobalFilterChange: setGlobalFilter,
+
+    manualPagination: true,
+    autoResetPageIndex: false,
+
+    pageCount: apiResponse?.meta?.last_page + 1,
+    rowCount: apiResponse?.meta?.total, // total rows
+    onPaginationChange: (updater) => {
+      // make sure updater is callable (to avoid typescript warning)
+      if (typeof updater !== "function") return;
+      const newPageInfo = updater(table.getState().pagination);
+      // console.log("old pagination :: ", table.getState().pagination);
+      // console.log("new pagination :: ", newPageInfo, newPageInfo?.pageIndex);
+      searchParams.set("page", newPageInfo?.pageIndex);
+      setSearchParams(searchParams);
+      setPagination(newPageInfo);
+    },
+
+    debugTable: true,
+  });
+
   return (
-    <div className="container mx-auto">
-      <div className="flex">
-        <Input
-          placeholder="SEARCH"
-          name="search"
-          value={searchInput}
-          type="text"
-          onChange={handlerChange}
+    <>
+      pagination:{JSON.stringify(pagination)}
+      <div>
+        <input
+          value={vSearch}
+          onChange={(e) => handlerSearch(String(e.target.value))}
+          placeholder="Search..."
         />
-        <div className="ml-auto">
-          <CreateButton to={"/dashboard/category/new"}>new</CreateButton>
-        </div>
       </div>
-      <Table data={data?.data} />
-      <Paginate data={data} />
-    </div>
+      <table>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {header.id === "title" ? (
+                    <div onClick={header.column.getToggleSortingHandler()}>
+                      {!header.isPlaceholder &&
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </div>
+                  ) : (
+                    <div>
+                      {!header.isPlaceholder &&
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                    </div>
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Pagination table={table} />
+    </>
   );
 }
