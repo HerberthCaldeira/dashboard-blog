@@ -4,17 +4,19 @@ import { getRequest } from "../../lib/axios/requests";
 
 interface IParams {
   page: number;
-  search: string;
+  search: string | null;
+  externalFilters: object;
 }
 
-const useGetCategory = ({ page, search }: IParams) => {
-  const { data, error, isError, isPending } = useQuery({
-    queryKey: categoryKeys.paginate(page, search),
+const useGetCategory = ({ page, search, externalFilters }: IParams) => {
+  const { data, error, isError, isPending, isSuccess } = useQuery({
+    queryKey: categoryKeys.paginate(page, search, externalFilters),
     queryFn: async () =>
       await getRequest("/api/category", {
         params: {
           page,
           search,
+          externalFilters,
         },
       }),
     placeholderData: keepPreviousData,
@@ -25,6 +27,7 @@ const useGetCategory = ({ page, search }: IParams) => {
     error,
     isError,
     isPending,
+    isSuccess,
   };
 };
 

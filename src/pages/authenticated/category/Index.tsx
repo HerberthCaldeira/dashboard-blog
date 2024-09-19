@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,44 +7,39 @@ import {
 import useGetCategory from "@/actions/category/useGetCategory";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/pages/components/tanStackTable/paginate/Index";
-import { handlePageQueryString } from "@/lib/utils";
-import useDebounce from "@/hooks/useDebounce";
+import useTableManagement from "@/pages/components/tanStackTable/hooks/useTableManagement";
+import { Input } from "@/components/ui/input";
+import { FormProvider, useForm } from "react-hook-form";
+import MyInput from "@/pages/components/form/fields/MyInput";
+import { Button } from "@/components/ui/button";
+import MyCalendar from "@/pages/components/form/fields/MyCalendar";
 
 export default function Index() {
   console.log("table render");
   const [searchParams, setSearchParams] = useSearchParams();
+  console.log("searchParams", searchParams);
 
-  const [data, setData] = useState([]);
+  const [externalFilters, setExternalFilters] = useState({});
 
-  const [pagination, setPagination] = useState({
-    pageIndex: handlePageQueryString(searchParams.get("page")),
-    pageSize: 15,
-  });
-
-  const [globalFilter, setGlobalFilter] = useState("");
-  const [vSearch, setVsearch] = useState("");
-
-  const dbfs = useCallback(
-    useDebounce((e) => {
-      setGlobalFilter(e);
-    }, 500),
-    [],
-  );
-
-  const handlerSearch = (e) => {
-    setVsearch(e);
-    dbfs(e);
-  };
+  const {
+    defaultData,
+    globalFilter,
+    setGlobalFilter,
+    visualSearchForInput,
+    handlerSearch,
+    pagination,
+    setPagination,
+  } = useTableManagement();
 
   const {
     data: apiResponse,
     isError,
     error,
-  } = useGetCategory({ page: pagination.pageIndex, search: globalFilter });
-
-  useEffect(() => {
-    setData(apiResponse?.data);
-  }, [apiResponse]);
+  } = useGetCategory({
+    page: pagination.pageIndex,
+    search: globalFilter,
+    externalFilters,
+  });
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
@@ -71,10 +66,8 @@ export default function Index() {
     [],
   );
 
-  const defaultData = useMemo(() => [], []);
-
   const table = useReactTable({
-    data: data ?? defaultData,
+    data: apiResponse?.data ?? defaultData,
     columns,
     getCoreRowModel: getCoreRowModel(),
 
@@ -105,13 +98,51 @@ export default function Index() {
     debugTable: true,
   });
 
+  //filter form
+  const formFilterMethods = useForm({
+    defaultValues: {
+      title: searchParams.get("externalFilters[title]") ?? "",
+      createdAt: searchParams.get("externalFilters[createdAt]") ?? "",
+    },
+  });
+
+  const handlerformgetsubmit = (data) => {
+    for (let key in data) {
+      if (data[key] == "") {
+        searchParams.delete(`externalFilters[${key}]`);
+        setSearchParams(searchParams);
+      }
+
+      if (key == "createdAt" && data[key] != "") {
+        data[key] = new Date(data[key]).toISOString();
+      }
+
+      if (data[key] != "") {
+        searchParams.set(`externalFilters[${key}]`, data[key]);
+        setSearchParams(searchParams);
+      }
+    }
+    setExternalFilters(data);
+    console.log("final data for filter in server", data);
+  };
+
   return (
     <>
       pagination:{JSON.stringify(pagination)}
+      externalFilters:{JSON.stringify(externalFilters)}
+      <div className="border-2 border-indigo-400">
+        <FormProvider {...formFilterMethods}>
+          <form onSubmit={formFilterMethods.handleSubmit(handlerformgetsubmit)}>
+            <MyCalendar form={formFilterMethods} name="createdAt" />
+            <MyInput type="text" name={"title"} label={"title"} />
+            <Button type="submit">submit</Button>
+          </form>
+        </FormProvider>
+      </div>
       <div>
-        <input
-          value={vSearch}
-          onChange={(e) => handlerSearch(String(e.target.value))}
+        <Input
+          value={visualSearchForInput}
+          onChange={(e) => handlerSearch(e)}
           placeholder="Search..."
         />
       </div>
