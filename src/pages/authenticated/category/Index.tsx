@@ -5,7 +5,7 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import useGetCategory from "@/actions/category/useGetCategory";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Pagination from "@/pages/components/tanStackTable/paginate/Index";
 import useTableManagement from "@/pages/components/tanStackTable/hooks/useTableManagement";
 import { Input } from "@/components/ui/input";
@@ -15,9 +15,12 @@ import { Button } from "@/components/ui/button";
 import MyCalendar from "@/pages/components/form/fields/MyCalendar";
 
 export default function Index() {
-  console.log("table render");
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log("searchParams", searchParams);
+  console.log("searchParams", searchParams, searchParams.toString());
+
+  /** not using  */
+  const location = useLocation();
+  console.log("location", location);
 
   const [externalFilters, setExternalFilters] = useState({});
 

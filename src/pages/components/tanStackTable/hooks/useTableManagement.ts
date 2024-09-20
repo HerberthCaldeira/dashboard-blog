@@ -5,8 +5,9 @@ import { handlePageQueryString } from "@/lib/utils";
 
 const useTableManagement = (delay = 500) => {
   const defaultData = useMemo(() => [], []);
+  
   const [searchParams, setSearchParams] = useSearchParams();
-
+  
   const [pagination, setPagination] = useState({
     pageIndex: handlePageQueryString(searchParams.get("page")),
     pageSize: 15,
@@ -15,6 +16,7 @@ const useTableManagement = (delay = 500) => {
   const [globalFilter, setGlobalFilter] = useState(
     searchParams.has("search") ? searchParams.get("search") : "",
   );
+  
   const [visualSearchForInput, setVsearch] = useState(
     searchParams.has("search") ? searchParams.get("search") : "",
   );
