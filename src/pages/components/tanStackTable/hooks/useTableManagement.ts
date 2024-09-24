@@ -5,18 +5,30 @@ import { handlePageQueryString } from "@/lib/utils";
 
 const useTableManagement = (delay = 500) => {
   const defaultData = useMemo(() => [], []);
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   const [pagination, setPagination] = useState({
     pageIndex: handlePageQueryString(searchParams.get("page")),
     pageSize: 15,
   });
 
-  const [globalFilter, setGlobalFilter] = useState(
+  const [searchBar, setSearchBar] = useState(
     searchParams.has("search") ? searchParams.get("search") : "",
   );
-  
+
+  console.log("q", searchParams.get("sorting"));
+
+  const [sorting, setSorting] = useState([
+    searchParams.has("sorting")
+      ? {
+          id: searchParams.get("sorting")?.split(":")[0],
+          desc:
+            searchParams.get("sorting")?.split(":")[1] == "desc" ? true : false,
+        }
+      : { id: "id", desc: false },
+  ]);
+
   const [visualSearchForInput, setVsearch] = useState(
     searchParams.has("search") ? searchParams.get("search") : "",
   );
@@ -27,27 +39,22 @@ const useTableManagement = (delay = 500) => {
         return { ...prev, pageIndex: 1 };
       });
 
-      setGlobalFilter(e.target.value);
+      setSearchBar(e.target.value);
     }, delay),
     [],
   );
 
   const handlerSearch = (e) => {
-    searchParams.set("search", e.target.value);
-    setSearchParams(searchParams);
-
-    searchParams.set("page", 1);
-    setSearchParams(searchParams);
-
     setVsearch(e.target.value);
-
     debounced(e);
   };
 
   return {
     defaultData,
-    globalFilter,
-    setGlobalFilter,
+    searchBar,
+    setSearchBar,
+    sorting,
+    setSorting,
     visualSearchForInput,
     handlerSearch,
     pagination,

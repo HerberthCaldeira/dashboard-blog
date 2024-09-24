@@ -5,7 +5,7 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import useGetCategory from "@/actions/category/useGetCategory";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Pagination from "@/pages/components/tanStackTable/paginate/Index";
 import useTableManagement from "@/pages/components/tanStackTable/hooks/useTableManagement";
 import { Input } from "@/components/ui/input";
@@ -13,21 +13,22 @@ import { FormProvider, useForm } from "react-hook-form";
 import MyInput from "@/pages/components/form/fields/MyInput";
 import { Button } from "@/components/ui/button";
 import MyCalendar from "@/pages/components/form/fields/MyCalendar";
+import useSetQueryStringManagement from "@/pages/components/tanStackTable/hooks/useSetQueryStringManagement";
 
 export default function Index() {
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log("searchParams", searchParams, searchParams.toString());
 
-  /** not using  */
-  const location = useLocation();
-  console.log("location", location);
-
-  const [externalFilters, setExternalFilters] = useState({});
+  const [formFilters, setExternalFilters] = useState({
+    title: searchParams.get("formFilters[title]") ?? "",
+    createdAt: searchParams.get("formFilters[createdAt]") ?? "",
+  });
 
   const {
     defaultData,
-    globalFilter,
-    setGlobalFilter,
+    searchBar,
+    setSearchBar,
+    sorting,
+    setSorting,
     visualSearchForInput,
     handlerSearch,
     pagination,
@@ -38,11 +39,23 @@ export default function Index() {
     data: apiResponse,
     isError,
     error,
+    isSuccess,
   } = useGetCategory({
     page: pagination.pageIndex,
-    search: globalFilter,
-    externalFilters,
+    searchBar,
+    formFilters,
+    sorting,
   });
+
+  useSetQueryStringManagement({
+    isSuccess,
+    searchBar,
+    sorting,
+    page: pagination,
+    formFilters,
+  });
+
+  console.log("sorting::", sorting);
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
@@ -76,11 +89,15 @@ export default function Index() {
 
     state: {
       pagination,
-      globalFilter,
+      globalFilter: searchBar,
+      sorting,
     },
+    onSortingChange: setSorting,
+
+    manualSorting: true,
 
     manualFiltering: true,
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: setSearchBar,
 
     manualPagination: true,
     autoResetPageIndex: false,
@@ -104,27 +121,12 @@ export default function Index() {
   //filter form
   const formFilterMethods = useForm({
     defaultValues: {
-      title: searchParams.get("externalFilters[title]") ?? "",
-      createdAt: searchParams.get("externalFilters[createdAt]") ?? "",
+      title: searchParams.get("formFilters[title]") ?? "",
+      createdAt: searchParams.get("formFilters[createdAt]") ?? "",
     },
   });
 
   const handlerformgetsubmit = (data) => {
-    for (let key in data) {
-      if (data[key] == "") {
-        searchParams.delete(`externalFilters[${key}]`);
-        setSearchParams(searchParams);
-      }
-
-      if (key == "createdAt" && data[key] != "") {
-        data[key] = new Date(data[key]).toISOString();
-      }
-
-      if (data[key] != "") {
-        searchParams.set(`externalFilters[${key}]`, data[key]);
-        setSearchParams(searchParams);
-      }
-    }
     setExternalFilters(data);
     console.log("final data for filter in server", data);
   };
@@ -132,7 +134,7 @@ export default function Index() {
   return (
     <>
       pagination:{JSON.stringify(pagination)}
-      externalFilters:{JSON.stringify(externalFilters)}
+      formFilters:{JSON.stringify(formFilters)}
       <div className="border-2 border-indigo-400">
         <FormProvider {...formFilterMethods}>
           <form onSubmit={formFilterMethods.handleSubmit(handlerformgetsubmit)}>
@@ -155,7 +157,7 @@ export default function Index() {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  {header.id === "title" ? (
+                  {
                     <div onClick={header.column.getToggleSortingHandler()}>
                       {!header.isPlaceholder &&
                         flexRender(
@@ -167,15 +169,7 @@ export default function Index() {
                         desc: " 🔽",
                       }[header.column.getIsSorted() as string] ?? null}
                     </div>
-                  ) : (
-                    <div>
-                      {!header.isPlaceholder &&
-                        flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                    </div>
-                  )}
+                  }
                 </th>
               ))}
             </tr>

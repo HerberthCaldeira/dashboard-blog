@@ -1,22 +1,23 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { categoryKeys } from "./queryKeys";
 import { getRequest } from "../../lib/axios/requests";
+import { ITableStateForFilter } from "@/shared/types/table-states";
 
-interface IParams {
-  page: number;
-  search: string | null;
-  externalFilters: object;
-}
-
-const useGetCategory = ({ page, search, externalFilters }: IParams) => {
+const useGetCategory = ({
+  page,
+  searchBar,
+  formFilters,
+  sorting,
+}: ITableStateForFilter) => {
   const { data, error, isError, isPending, isSuccess } = useQuery({
-    queryKey: categoryKeys.paginate(page, search, externalFilters),
+    queryKey: categoryKeys.paginate(page, searchBar, sorting, formFilters),
     queryFn: async () =>
       await getRequest("/api/category", {
         params: {
           page,
-          search,
-          externalFilters,
+          search: searchBar,
+          sorting,
+          formFilters,
         },
       }),
     placeholderData: keepPreviousData,
