@@ -7,7 +7,7 @@ interface IParams extends ITableStateForFilter {
 }
 
 /**
- * Make browser url reflect params from get request after success
+ * change url from browser to reflect right state and query string from request
  */
 export default function useSetQueryStringManagement({
   isSuccess,
@@ -22,6 +22,7 @@ export default function useSetQueryStringManagement({
     if (isSuccess) {
       console.log("useQueryStringManagement::useEffect::isSuccess");
 
+      //SEARCH BAR
       if (searchBar == "") {
         searchParams.delete("search");
       }
@@ -32,7 +33,7 @@ export default function useSetQueryStringManagement({
       } else {
         searchParams.set("page", page?.pageIndex);
       }
-
+      //SORTING
       searchParams.delete("sorting");
       if (sorting.length > 0 && Object.keys(sorting[0]).length > 0) {
         searchParams.set(
@@ -41,6 +42,7 @@ export default function useSetQueryStringManagement({
         );
       }
 
+      //EXTERNAL FORM
       for (let key in formFilters) {
         if (formFilters[key] == "") {
           searchParams.delete(`formFilters[${key}]`);

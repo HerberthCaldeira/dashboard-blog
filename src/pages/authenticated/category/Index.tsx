@@ -55,14 +55,31 @@ export default function Index() {
     formFilters,
   });
 
-  console.log("sorting::", sorting);
-
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
   }
 
   const columns = useMemo(
     () => [
+      {
+        id: "select-col",
+        header: ({ table }) => (
+          <input
+            type="checkbox"
+            checked={table.getIsAllRowsSelected()}
+            // indeterminate={table.getIsSomeRowsSelected()} // TODO: create component to handler interminate. see tansatack doc
+            onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            type="checkbox"
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+      },
       {
         header: "ID",
         accessorKey: "id",
@@ -84,6 +101,7 @@ export default function Index() {
 
   const table = useReactTable({
     data: apiResponse?.data ?? defaultData,
+    getRowId: (row) => row.id,
     columns,
     getCoreRowModel: getCoreRowModel(),
 
@@ -130,7 +148,12 @@ export default function Index() {
     setExternalFilters(data);
     console.log("final data for filter in server", data);
   };
-
+  /*
+  console.log('a',table.getState().rowSelection) //get the row selection state - { 1: true, 2: false, etc... }
+  console.log('b',table.getSelectedRowModel().rows) //get full client-side selected rows
+  console.log('c',table.getFilteredSelectedRowModel().rows) //get filtered client-side selected rows
+  console.log('d',table.getGroupedSelectedRowModel().rows) //get grouped client-side selected rows
+ */
   return (
     <>
       pagination:{JSON.stringify(pagination)}

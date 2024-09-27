@@ -3,6 +3,11 @@ import useDebounce from "@/hooks/useDebounce";
 import { useSearchParams } from "react-router-dom";
 import { handlePageQueryString } from "@/lib/utils";
 
+/**
+* Init all states for table view
+* @param delay 
+* @returns 
+*/
 const useTableManagement = (delay = 500) => {
   const defaultData = useMemo(() => [], []);
 
@@ -16,8 +21,6 @@ const useTableManagement = (delay = 500) => {
   const [searchBar, setSearchBar] = useState(
     searchParams.has("search") ? searchParams.get("search") : "",
   );
-
-  console.log("q", searchParams.get("sorting"));
 
   const [sorting, setSorting] = useState([
     searchParams.has("sorting")
