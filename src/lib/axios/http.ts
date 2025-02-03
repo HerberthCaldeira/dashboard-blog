@@ -10,16 +10,13 @@ import { AxiosRequestConfig, AxiosError } from "axios";
  */
 export const getRequest = async <TResponse>(
   url: string,
-  config?: AxiosRequestConfig,
+  config?: AxiosRequestConfig
 ): Promise<TResponse> => {
   try {
     const response = await axios.get<TResponse>(url, config);
     return response.data;
   } catch (error) {
-    console.log("catch from getRequest", error);
-    const message = (error as AxiosError<{ message: string }>).response?.data
-      ?.message;
-    //notification(`Error while fetching ${url}. ${message ?? ''}`, 'error');
+    console.log("catch::getRequest", error);
     throw error; // need to throw or onError will fail
   }
 };
@@ -38,16 +35,12 @@ export const getRequest = async <TResponse>(
 export const postRequest = async <TRequest, TResponse>(
   url: string,
   data: TRequest,
-  config?: AxiosRequestConfig,
+  config?: AxiosRequestConfig
 ): Promise<TResponse> => {
   try {
     const response = await axios.post<TResponse>(url, data, config);
     return response.data;
   } catch (error) {
-    console.log("catch from postRequest", error);
-    const message = (error as AxiosError<{ message: string }>).response?.data
-      ?.message;
-    // notification(`Error while posting ${url}. ${message ?? ''}`, 'error');
     throw error; // need to throw or onError will fail
   }
 };
@@ -65,16 +58,13 @@ export const postRequest = async <TRequest, TResponse>(
 export const putRequest = async <TRequest, TResponse>(
   url: string,
   data: TRequest,
-  config?: AxiosRequestConfig,
+  config?: AxiosRequestConfig
 ): Promise<TResponse> => {
   try {
     const response = await axios.put<TResponse>(url, data, config);
     return response.data;
   } catch (error) {
-    console.log("catch from putRequest", error);
-    const message = (error as AxiosError<{ message: string }>).response?.data
-      ?.message;
-    //notification(`Error while updating ${url}. ${message ?? ""}`, "error");
+    console.error("catch from putRequest", error);
     throw error;
   }
 };
@@ -89,7 +79,7 @@ export const putRequest = async <TRequest, TResponse>(
  */
 export const deleteRequest = async <TResponse>(
   url: string,
-  config?: AxiosRequestConfig,
+  config?: AxiosRequestConfig
 ): Promise<TResponse> => {
   try {
     const response = await axios.delete<TResponse>(url, config);

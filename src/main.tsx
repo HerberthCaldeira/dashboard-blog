@@ -7,17 +7,17 @@ import {
 } from "react-router-dom";
 import Home from "./pages/home/Home";
 import ErrorPage from "./pages/Error";
-import Login from "./pages/login/Index";
 import Dashboard from "./pages/authenticated/dashboard/Dashboard";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Category from "./pages/authenticated/category/Index";
-import NewCatagory from "./pages/authenticated/category/new/NewCatagory";
 import Posts from "./pages/authenticated/post/Index";
 import NewPost from "./pages/authenticated/post/new/NewPost";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
 import "./index.css";
 import App from "./App";
-import EditFormCategory from "./pages/authenticated/category/edit/EditFormCategory";
+import { default as EditCategory } from "./pages/authenticated/category/form/edit";
+import { default as CreateCategory } from "./pages/authenticated/category/form/create";
+import Login from "./pages/login";
 
 const Fallback = () => {
   const error = useRouteError();
@@ -53,11 +53,11 @@ const router = createBrowserRouter([
       },
       {
         path: "category/new",
-        element: <NewCatagory />,
+        element: <CreateCategory />,
       },
       {
         path: "category/:id/edit",
-        element: <EditFormCategory />,
+        element: <EditCategory />,
       },
       {
         path: "posts",
@@ -93,5 +93,5 @@ createRoot(document.getElementById("root")!).render(
 
       <App />
     </QueryClientProvider>
-  </StrictMode>,
+  </StrictMode>
 );

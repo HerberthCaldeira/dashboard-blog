@@ -2,9 +2,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../lib/axios/axios";
 import { credentials, IAuth, typeAuthError } from "./types";
 import { useEffect, useState } from "react";
+import { postRequest } from "@/lib/axios/http";
 
 const csrf = () => axios.get("/sanctum/csrf-cookie");
+
 const getLoggedUser = async () => {
+  // eslint: try-catch unnecessary because i only throw err and i do nothing before
   // eslint-disable-next-line no-useless-catch
   try {
     const user = await axios.get("/api/user");
@@ -15,9 +18,9 @@ const getLoggedUser = async () => {
 };
 
 export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null); // Estado para armazenar o usuário
   const [error, setError] = useState<typeAuthError>(null); // Estado para armazenar os erros
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,25 +51,16 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: IAuth) => {
     }
   }, [user, error]);
 
-  const login = async (data: credentials, setError: () => void) => {
+  const login = async (data: credentials) => {
     await csrf();
 
     // eslint-disable-next-line no-useless-catch
     try {
       console.log("login");
-      await axios.post("/api/login", data);
+      await postRequest("/api/login", data);
       navigate("/dashboard");
     } catch (err) {
-      if (err?.response.status !== 422) throw err;
-
-      const serverErrors = err?.response.data.errors;
-
-      for (const key in serverErrors) {
-        setError(key, {
-          type: "serverError",
-          message: serverErrors[key][0],
-        });
-      }
+      throw err;
     }
   };
 

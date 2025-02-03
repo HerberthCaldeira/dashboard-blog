@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { categoryKeys } from "./queryKeys";
-import { getRequest } from "../../lib/axios/requests";
+import { categoryKeys } from "../queryKeys";
+import { getRequest } from "../../../lib/axios/http";
 
 const useGetCategoryForSelectField = () => {
   const { data, error, isError, isPending } = useQuery({

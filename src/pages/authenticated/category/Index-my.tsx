@@ -19,7 +19,7 @@ export default function Index() {
       console.log("handleSearchDebounce");
       setSearch(e.target.value);
     }, 500),
-    [],
+    []
   );
 
   const handlerChange = (e) => {

@@ -10,7 +10,7 @@ import { postQKeys } from "../../../../actions/post/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
 import Tiptap from "../../../components/form/editor/TipTap";
 import { useState } from "react";
-import useGetCategoryForSelectField from "../../../../actions/category/useGetCategoryForSelectField";
+import useGetCategoryForSelectField from "../../../../actions/category/hooksOldWay/useGetCategoryForSelectField";
 
 export default function NewPost() {
   /** state for send taptip content */

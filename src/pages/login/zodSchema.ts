@@ -3,8 +3,8 @@ import { z } from "zod";
 const zodSchema = z.object({
   email: z
     .string()
-    .email()
-    .min(1, { message: "Obrigatório" })
+    .email('Email inválido')
+    .min(3, { message: "Obrigatório" })
     .max(50, { message: "Máximo 50" }),
   password: z
     .string()

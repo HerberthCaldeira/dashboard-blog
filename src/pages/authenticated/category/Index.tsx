@@ -1,12 +1,7 @@
 import { useMemo, useState } from "react";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-} from "@tanstack/react-table";
+import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import useGetCategory from "@/actions/category/useGetCategory";
-import { useSearchParams } from "react-router-dom";
-import Pagination from "@/pages/components/tanStackTable/paginate/Index";
+import { Link, useSearchParams } from "react-router-dom";
 import useTableManagement from "@/pages/components/tanStackTable/hooks/useTableManagement";
 import { Input } from "@/components/ui/input";
 import { FormProvider, useForm } from "react-hook-form";
@@ -14,8 +9,15 @@ import MyInput from "@/pages/components/form/fields/MyInput";
 import { Button } from "@/components/ui/button";
 import MyCalendar from "@/pages/components/form/fields/MyCalendar";
 import useSetQueryStringManagement from "@/pages/components/tanStackTable/hooks/useSetQueryStringManagement";
+import TanStackTable from "@/pages/components/tanStackTable/Index";
+import { EditButton } from "@/pages/components/buttons/EditButton";
+import { DeleteModal } from "@/pages/components/Modals/DeleteModal";
+import { useQueryClient } from "@tanstack/react-query";
+import { categoryKeys } from "@/actions/category/queryKeys";
+import actions from "@/actions";
 
 export default function Index() {
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [formFilters, setExternalFilters] = useState({
@@ -55,10 +57,22 @@ export default function Index() {
     formFilters,
   });
 
-  if (isError) {
-    return <div>{JSON.stringify(error)}</div>;
-  }
+  //DELETE
+  const { mutate: deleteMutate } = actions.category.useDeleteCategory();
 
+  const handlerDelete = (id) => {
+    deleteMutate(id, {
+      onSuccess: () => {
+        console.log("deleted::onSucess");
+
+        queryClient.invalidateQueries({
+          queryKey: categoryKeys.all,
+        });
+      },
+    });
+  };
+
+  //TABLE
   const columns = useMemo(
     () => [
       {
@@ -95,13 +109,29 @@ export default function Index() {
         header: "Name",
         accessorKey: "name",
       },
+      {
+        header: "Actions",
+        cell: ({ cell, row }) => {
+          return (
+            <div>
+              {" "}
+              <EditButton to={`/dashboard/category/${row.original.id}/edit`} />
+              <DeleteModal
+                id={row.original.id}
+                description={row.original.name}
+                handlerDelete={handlerDelete}
+              />
+            </div>
+          );
+        },
+      },
     ],
-    [],
+    []
   );
 
   const table = useReactTable({
     data: apiResponse?.data ?? defaultData,
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.id, // helps with select row
     columns,
     getCoreRowModel: getCoreRowModel(),
 
@@ -148,15 +178,22 @@ export default function Index() {
     setExternalFilters(data);
     console.log("final data for filter in server", data);
   };
-  /*
-  console.log('a',table.getState().rowSelection) //get the row selection state - { 1: true, 2: false, etc... }
+
+  /* 
+  console.log("a", table.getState().rowSelection); //get the row selection state - { 1: true, 2: false, etc... }
   console.log('b',table.getSelectedRowModel().rows) //get full client-side selected rows
   console.log('c',table.getFilteredSelectedRowModel().rows) //get filtered client-side selected rows
   console.log('d',table.getGroupedSelectedRowModel().rows) //get grouped client-side selected rows
  */
+
+  if (isError) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
+
   return (
     <>
-      pagination:{JSON.stringify(pagination)}
+      <Link to={"/dashboard/category/new"}>New</Link> | pagination:
+      {JSON.stringify(pagination)}
       formFilters:{JSON.stringify(formFilters)}
       <div className="border-2 border-indigo-400">
         <FormProvider {...formFilterMethods}>
@@ -174,43 +211,7 @@ export default function Index() {
           placeholder="Search..."
         />
       </div>
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {
-                    <div onClick={header.column.getToggleSortingHandler()}>
-                      {!header.isPlaceholder &&
-                        flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                      {{
-                        asc: " 🔼",
-                        desc: " 🔽",
-                      }[header.column.getIsSorted() as string] ?? null}
-                    </div>
-                  }
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination table={table} />
+      <TanStackTable table={table} />
     </>
   );
 }

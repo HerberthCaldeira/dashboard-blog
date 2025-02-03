@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { categoryKeys } from "./queryKeys";
-import { getRequest } from "../../lib/axios/requests";
+import { getRequest } from "../../lib/axios/http";
 import { ITableStateForFilter } from "@/shared/types/table-states";
 
 const useGetCategory = ({

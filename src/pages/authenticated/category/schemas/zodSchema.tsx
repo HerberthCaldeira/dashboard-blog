@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const zodSchema = z.object({
+  id: z.number().nullable(),
   name: z
     .string()
     .min(1, { message: "Obrigatório" })
