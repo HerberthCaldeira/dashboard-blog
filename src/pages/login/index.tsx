@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FormProvider } from "react-hook-form";
-import MyInput from "../components/form/fields/MyInput";
+import MyInput from "../../components/my/form/inputFields/MyInput";
 import useMyForm from "@/components/my/form/react-hook-form";
 
 export default function Login() {

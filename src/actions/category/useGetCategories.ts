@@ -1,26 +1,34 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { categoryKeys } from "./queryKeys";
 import { getRequest } from "../../lib/axios/http";
-import { ITableStateForFilter } from "@/shared/types/table-states";
+import type { ICategoryFormFilters } from "@/pages/authenticated/category/types";
 
-const useGetCategory = ({
-  page,
-  searchBar,
+interface IUseGetCategories {
+  formFilters: ICategoryFormFilters;
+  page: string;
+  sorting: {
+    id: string;
+    desc: boolean;
+  }[];
+}
+
+const useGetCategories = ({
   formFilters,
+  page,
   sorting,
-}: ITableStateForFilter) => {
+}: IUseGetCategories) => {
   const { data, error, isError, isPending, isSuccess } = useQuery({
-    queryKey: categoryKeys.paginate(page, searchBar, sorting, formFilters),
+    queryKey: categoryKeys.paginate({ formFilters, page, sorting }),
     queryFn: async () =>
       await getRequest("/api/category", {
         params: {
-          page,
-          search: searchBar,
-          sorting,
           formFilters,
+          page,
+          sorting,
         },
       }),
     placeholderData: keepPreviousData,
+    staleTime: 0,
   });
 
   return {
@@ -32,4 +40,4 @@ const useGetCategory = ({
   };
 };
 
-export default useGetCategory;
+export default useGetCategories;

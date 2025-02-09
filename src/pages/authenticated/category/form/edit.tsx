@@ -1,13 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import actions from "@/actions";
 import useMyForm from "@/components/my/form/react-hook-form";
-import { zodSchema } from "../schemas/zodSchema";
+import { categorySchema } from "../schemas/zodSchema";
 import Form from ".";
 import { useEffect } from "react";
 
 export default function Edit() {
   const params = useParams();
   const navigate = useNavigate();
+
   const {
     data: category,
     isPending,
@@ -16,11 +17,8 @@ export default function Edit() {
     id: params.id,
   });
 
-  console.log(category);
-
   const { formMethods, onSubmit, errors, isSubmitting } = useMyForm({
-    schema: zodSchema,
-    mutationFn: actions.category.update,
+    schema: categorySchema,
     transformFn: (data) => {
       console.log("transformFn", data);
       return {
@@ -28,6 +26,7 @@ export default function Edit() {
         payload: { name: data.name },
       };
     },
+    mutationFn: actions.category.update,
     mutationOptions: {
       onSuccess: (data, variables, context) => {
         console.log("data", data);
@@ -38,8 +37,8 @@ export default function Edit() {
       onError: (error) => {
         console.log("error", error);
       },
-      defaultValues: { id: null, name: "" },
     },
+    defaultValues: { id: null, name: "" },
   });
 
   useEffect(() => {

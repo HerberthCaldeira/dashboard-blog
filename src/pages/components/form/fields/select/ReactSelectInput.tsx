@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import ReactSelect from "react-select";
-import { ReactSelectProps } from "../types/fieldsTypes";
+import { ReactSelectProps } from "../../../../../components/my/form/inputFields/fieldsTypes";
 import { ErrorMessage } from "@hookform/error-message";
 
 // Select Input using React Select library

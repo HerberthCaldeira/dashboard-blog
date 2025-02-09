@@ -16,15 +16,11 @@ interface ApiError {
   message: string;
 }
 
-interface UseFormWithQueryProps<T extends FieldValues, R>
-  extends Omit<UseFormProps<T>, "resolver"> {
+interface UseFormWithQueryProps<T extends FieldValues, R> extends Omit<UseFormProps<T>, "resolver"> {
   schema: z.ZodType<T>;
-  transformFn?: <TFormData, TSubmitData>(data: TFormData) => TSubmitData;
-  mutationFn: (data: T) => Promise<ApiResponse<R>>;
-  mutationOptions?: Omit<
-    UseMutationOptions<ApiResponse<R>, ApiError, T>,
-    "mutationFn"
-  >;
+  transformFn?: <TFormData>(data: TFormData) => any;
+  mutationFn: (data: any) => Promise<ApiResponse<R>>;
+  mutationOptions?: Omit<UseMutationOptions<ApiResponse<R>, ApiError, T>, "mutationFn">;
   queryKeysToInvalidate?: any[][];
 }
 

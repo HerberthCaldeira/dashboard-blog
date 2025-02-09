@@ -1,15 +1,15 @@
 import { categoryKeys } from "../../../../actions/category/queryKeys";
-import { zodSchema } from "../schemas/zodSchema";
 import useMyForm from "@/components/my/form/react-hook-form";
 import actions from "@/actions";
 import Form from ".";
 import { useNavigate } from "react-router-dom";
+import { categorySchema } from "../schemas/zodSchema";
 
 export default function Create() {
   const navigate = useNavigate();
   const { formMethods, onSubmit, errors, isSubmitting, submitError } =
     useMyForm({
-      schema: zodSchema,
+      schema: categorySchema,
       mutationFn: actions.category.create,
       queryKeysToInvalidate: [categoryKeys.all],
       mutationOptions: {
@@ -23,9 +23,6 @@ export default function Create() {
       },
       defaultValues: { id: null, name: "" },
     });
-
-  console.log(submitError);
-  console.log(errors);
 
   return (
     <>

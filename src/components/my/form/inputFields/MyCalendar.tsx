@@ -16,15 +16,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useFormContext } from "react-hook-form";
 
-export default function MyCalendar({ form, name }) {
+export default function MyCalendar({ name, label = "Date" }) {
+  const form = useFormContext();
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>Date of birth</FormLabel>
+          <FormLabel>{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -32,7 +34,7 @@ export default function MyCalendar({ form, name }) {
                   variant={"outline"}
                   className={cn(
                     "w-[240px] pl-3 text-left font-normal",
-                    !field.value && "text-muted-foreground",
+                    !field.value && "text-muted-foreground"
                   )}
                 >
                   {field.value ? (

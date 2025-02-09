@@ -9,7 +9,7 @@ import Home from "./pages/home/Home";
 import ErrorPage from "./pages/Error";
 import Dashboard from "./pages/authenticated/dashboard/Dashboard";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Category from "./pages/authenticated/category/Index";
+import Category from "./pages/authenticated/category";
 import Posts from "./pages/authenticated/post/Index";
 import NewPost from "./pages/authenticated/post/new/NewPost";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
@@ -90,7 +90,6 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <RouterProvider router={router} />
-
       <App />
     </QueryClientProvider>
   </StrictMode>

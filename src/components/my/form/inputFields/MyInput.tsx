@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { InputProps } from "./types/fieldsTypes";
+import { InputProps } from "./fieldsTypes";
 
 import { ErrorMessage } from "@hookform/error-message";
 import { Input } from "@/components/ui/input";

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const zodSchema = z.object({
+const categorySchema = z.object({
   id: z.number().nullable(),
   name: z
     .string()
@@ -8,5 +8,5 @@ const zodSchema = z.object({
     .max(255, { message: "Máximo 255" }),
 });
 
-export type TCategoryFormFields = z.infer<typeof zodSchema>;
-export { zodSchema };
+export type TCategoryFormFields = z.infer<typeof categorySchema>;
+export { categorySchema };

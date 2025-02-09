@@ -1,17 +1,11 @@
 export const categoryKeys = {
   all: ["category::all"],
-  paginate: (
-    page: string,
-    search: string | null,
-    sorting: string,
-    formFilters: object
-  ) => [
+  paginate: ({ formFilters, page, sorting }: any) => [
     ...categoryKeys.all,
     "category::paginate",
-    page,
-    search,
-    sorting,
     formFilters,
+    page,
+    sorting,
   ],
 
   useGetCategoryById: (id: string) => ["category", id, "edit"],

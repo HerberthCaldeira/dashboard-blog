@@ -1,13 +1,13 @@
 import { create } from "./create";
 import { update } from "./update";
 import useDeleteCategory from "./useDeleteCategory";
-import useGetCategory from "./useGetCategory";
+import useGetCategories from "./useGetCategories";
 import useGetCategoryById from "./useGetCategoryById";
 
 export default {
   create,
   update,
-  useGetCategory,
+  useGetCategories,
   useGetCategoryById,
   useDeleteCategory,
 };

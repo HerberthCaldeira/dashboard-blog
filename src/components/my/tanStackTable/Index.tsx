@@ -1,13 +1,12 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Pagination from "@/pages/components/tanStackTable/paginate/Index";
+
 import { flexRender } from "@tanstack/react-table";
 
 export default function TanStackTable({ table }) {
@@ -24,7 +23,7 @@ export default function TanStackTable({ table }) {
                       {!header.isPlaceholder &&
                         flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                       {{
                         asc: " 🔼",
@@ -49,7 +48,6 @@ export default function TanStackTable({ table }) {
           ))}
         </TableBody>
       </Table>
-      <Pagination table={table} />
     </div>
   );
 }

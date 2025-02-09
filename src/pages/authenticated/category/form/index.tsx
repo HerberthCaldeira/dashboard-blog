@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import MyInput from "@/pages/components/form/fields/MyInput";
-
+import MyInput from "@/components/my/form/inputFields/MyInput";
 import { FormProvider } from "react-hook-form";
 
 export default function Form(props: any) {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import usePostPost from "../../../../actions/post/usePostPost";
 import { TPostFormFields, zodSchema } from "./zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import MyInput from "../../../components/form/fields/MyInput";
+import MyInput from "../../../../components/my/form/inputFields/MyInput";
 import { AxiosError } from "axios";
 import { ReactSelectInput } from "../../../components/form/fields/select/ReactSelectInput";
 import { postQKeys } from "../../../../actions/post/queryKeys";

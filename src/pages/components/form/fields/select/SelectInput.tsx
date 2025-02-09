@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useFormContext } from "react-hook-form";
 import ErrorValidationMessage from "../../ErrorValidationMessage";
-import { SelectProps } from "../types/fieldsTypes";
+import { SelectProps } from "../../../../../components/my/form/inputFields/fieldsTypes";
 
 export const SelectInput: FC<SelectProps> = ({
   name,
