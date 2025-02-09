@@ -1,19 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-
-import {
-  decodeSorting,
-  handlePageQueryString,
-  arrayToQueryString,
-} from "../utils";
+import tableUrlParamsManagament from "../helpers/tableUrlParamsManagament";
 
 interface ITanstackTable {
   columns: any;
   apiResponse: any;
 }
 
-/**  
+/**
  * @returns
  */
 const useTableTanStack = ({ columns, apiResponse }: ITanstackTable) => {
@@ -21,7 +16,9 @@ const useTableTanStack = ({ columns, apiResponse }: ITanstackTable) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [pagination, setPagination] = useState({
-    pageIndex: handlePageQueryString(searchParams.get("page")),
+    pageIndex: tableUrlParamsManagament.handlePageQueryString(
+      searchParams.get("page")
+    ),
     pageSize: 15,
   });
 
@@ -33,14 +30,17 @@ const useTableTanStack = ({ columns, apiResponse }: ITanstackTable) => {
   >(() => {
     const sortingParam = searchParams.get("sorting");
     return sortingParam
-      ? decodeSorting(sortingParam)
+      ? tableUrlParamsManagament.extractSortingArrayFromQueryString(sortingParam)
       : [{ id: "id", desc: false }];
   });
 
   useEffect(() => {
     if (sorting?.length > 0) {
       setSearchParams((state) => {
-        state.set("sorting", arrayToQueryString(sorting));
+        state.set(
+          "sorting",
+          tableUrlParamsManagament.makeQueryStringFromSortingArray(sorting)
+        );
         return state;
       });
     }

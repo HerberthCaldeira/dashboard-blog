@@ -5,7 +5,7 @@ import type { ICategoryFormFilters } from "@/pages/authenticated/category/types"
 
 interface IUseGetCategories {
   formFilters: ICategoryFormFilters;
-  page: string;
+  page: number;
   sorting: {
     id: string;
     desc: boolean;

@@ -2,7 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import actions from "@/actions";
 import CategoryTableFilter from "./categoryTableFilter";
 import CategoryTable from "./categoryTable";
-import { queryStringToArray } from "@/components/my/tanStackTable/utils";
+import tableUrlParamsManagament from "@/components/my/tanStackTable/helpers/tableUrlParamsManagament";
 
 export default function Index() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,9 +12,13 @@ export default function Index() {
     createdAt: searchParams.get("formFilters[createdAt]") ?? "",
   };
 
-  let page = searchParams.get("page") ?? "1";
+  let page = tableUrlParamsManagament.handlePageQueryString(
+    searchParams.get("page")
+  );
 
-  let sorting = queryStringToArray(searchParams.get("sorting") ?? "id:asc");
+  let sorting = tableUrlParamsManagament.extractSortingArrayFromQueryString(
+    searchParams.get("sorting") ?? "id:asc"
+  );
 
   const {
     data: apiResponse,

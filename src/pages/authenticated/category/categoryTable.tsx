@@ -1,27 +1,26 @@
 import { EditButton } from "@/components/my/buttons/EditButton";
+import TanStackTable from "@/components/my/tanStackTable";
 import useTableTanStack from "@/components/my/tanStackTable/hooks/useTableTanStack";
-import TanStackTable from "@/components/my/tanStackTable/Index";
 import Pagination from "@/components/my/tanStackTable/paginate/Index";
 import { useMemo } from "react";
 
 export default function CategoryTable({ apiResponse }) {
+  // //DELETE
+  // const queryClient = useQueryClient();
+  // const { mutate: deleteMutate } = actions.category.useDeleteCategory();
 
-    // //DELETE
-    // const queryClient = useQueryClient();
-    // const { mutate: deleteMutate } = actions.category.useDeleteCategory();
-  
-    // const handlerDelete = (id) => {
-    //   deleteMutate(id, {
-    //     onSuccess: () => {
-    //       console.log("deleted::onSucess");
-  
-    //       queryClient.invalidateQueries({
-    //         queryKey: categoryKeys.all,
-    //       });
-    //     },
-    //   });
-    // };
-  
+  // const handlerDelete = (id) => {
+  //   deleteMutate(id, {
+  //     onSuccess: () => {
+  //       console.log("deleted::onSucess");
+
+  //       queryClient.invalidateQueries({
+  //         queryKey: categoryKeys.all,
+  //       });
+  //     },
+  //   });
+  // };
+
   const columns = useMemo(
     () => [
       {
