@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useMutation,
   UseMutationOptions,
-  QueryClient,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { z } from "zod";
 
@@ -16,11 +16,15 @@ interface ApiError {
   message: string;
 }
 
-interface UseFormWithQueryProps<T extends FieldValues, R> extends Omit<UseFormProps<T>, "resolver"> {
+interface UseFormWithQueryProps<T extends FieldValues, R>
+  extends Omit<UseFormProps<T>, "resolver"> {
   schema: z.ZodType<T>;
   transformFn?: <TFormData>(data: TFormData) => any;
   mutationFn: (data: any) => Promise<ApiResponse<R>>;
-  mutationOptions?: Omit<UseMutationOptions<ApiResponse<R>, ApiError, T>, "mutationFn">;
+  mutationOptions?: Omit<
+    UseMutationOptions<ApiResponse<R>, ApiError, T>,
+    "mutationFn"
+  >;
   queryKeysToInvalidate?: any[][];
 }
 
@@ -37,7 +41,7 @@ const useMyForm = <T extends FieldValues, R>({
   queryKeysToInvalidate,
   ...formProps
 }: UseFormWithQueryProps<T, R>) => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const formMethods = useForm<T>({
     ...formProps,

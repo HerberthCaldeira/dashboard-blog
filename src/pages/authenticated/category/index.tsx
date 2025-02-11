@@ -1,8 +1,9 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import actions from "@/actions";
 import CategoryTableFilter from "./categoryTableFilter";
 import CategoryTable from "./categoryTable";
 import tableUrlParamsManagament from "@/components/my/tanStackTable/helpers/tableUrlParamsManagament";
+import { CreateButton } from "@/components/my/buttons/CreateButton";
 
 export default function Index() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,8 +38,10 @@ export default function Index() {
 
   return (
     <div className="m-8">
-      <Link to={"/dashboard/category/new"}>New</Link> | pagination:
+      <CreateButton to="/dashboard/category/new">Create</CreateButton>
+
       <CategoryTableFilter />
+
       {isPending ? (
         <div>Loading...</div>
       ) : (

@@ -88,7 +88,6 @@ export const deleteRequest = async <TResponse>(
     console.log("catch from deleteRequest", error);
     const message = (error as AxiosError<{ message: string }>).response?.data
       ?.message;
-    //notification(`Error while deleting ${url}. ${message ?? ''}`, 'error');
     throw error;
   }
 };

@@ -1,9 +1,27 @@
 import { deleteRequest } from "@/lib/axios/http";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { categoryKeys } from "./queryKeys";
 
 const useDeleteCategory = () => {
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
-    mutationFn: (id) => deleteRequest(`/api/category/${id}/delete`),
+    mutationFn: (id: number) => deleteRequest(`/api/category/${id}/delete`),
+    onSuccess: (data, variables, context) => {
+      // I will fire first
+      console.log("useMutate::onSuccess");
+      queryClient.invalidateQueries({
+        queryKey: categoryKeys.all,
+      });
+    },
+    onError: (error, variables, context) => {
+      // I will fire first
+      console.log("useMutate::onError");
+    },
+    onSettled: (data, error, variables, context) => {
+      // I will fire first
+      console.log("useMutate::onSettled");
+    },
   });
 
   return {

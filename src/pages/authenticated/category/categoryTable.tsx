@@ -1,3 +1,6 @@
+import actions from "@/actions";
+import { categoryKeys } from "@/actions/category/queryKeys";
+import { DeleteButton } from "@/components/my/buttons/DeleteButton";
 import { EditButton } from "@/components/my/buttons/EditButton";
 import TanStackTable from "@/components/my/tanStackTable";
 import useTableTanStack from "@/components/my/tanStackTable/hooks/useTableTanStack";
@@ -5,21 +8,15 @@ import Pagination from "@/components/my/tanStackTable/paginate/Index";
 import { useMemo } from "react";
 
 export default function CategoryTable({ apiResponse }) {
-  // //DELETE
-  // const queryClient = useQueryClient();
-  // const { mutate: deleteMutate } = actions.category.useDeleteCategory();
+  const { mutate: deleteMutate } = actions.category.useDeleteCategory();
 
-  // const handlerDelete = (id) => {
-  //   deleteMutate(id, {
-  //     onSuccess: () => {
-  //       console.log("deleted::onSucess");
-
-  //       queryClient.invalidateQueries({
-  //         queryKey: categoryKeys.all,
-  //       });
-  //     },
-  //   });
-  // };
+  const handlerDelete = (id: number) => {
+    deleteMutate(id, {
+      onSuccess: () => {
+        console.log("deleted::onSucess");
+      },
+    });
+  };
 
   const columns = useMemo(
     () => [
@@ -64,11 +61,13 @@ export default function CategoryTable({ apiResponse }) {
             <div>
               {" "}
               <EditButton to={`/dashboard/category/${row.original.id}/edit`} />
-              {/* <DeleteModal
-                id={row.original.id}
-                description={row.original.name}
-                handlerDelete={handlerDelete}
-              /> */}
+              <DeleteButton
+                onDelete={() => handlerDelete(row.original.id)}
+                title={"Delete"}
+                text={"Are you sure you want to delete this category?"}
+                icon={"warning"}
+                confirmButtonText={"Delete"}
+              />
             </div>
           );
         },
