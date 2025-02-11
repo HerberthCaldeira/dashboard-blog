@@ -4,6 +4,7 @@ import useMyForm from "@/components/my/form/react-hook-form";
 import { categorySchema } from "../schemas/zodSchema";
 import Form from ".";
 import { useEffect } from "react";
+import { categoryKeys } from "@/actions/category/queryKeys";
 
 export default function Edit() {
   const params = useParams();
@@ -39,6 +40,7 @@ export default function Edit() {
       },
     },
     defaultValues: { id: null, name: "" },
+    queryKeysToInvalidate: [categoryKeys.useGetCategoryById(params.id!)],
   });
 
   useEffect(() => {
