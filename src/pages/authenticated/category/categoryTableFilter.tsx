@@ -22,12 +22,15 @@ export default function CategoryTableFilter() {
       data.search
         ? state.set("formFilters[search]", data.search)
         : state.delete("formFilters[search]");
+
       data.createdAt
         ? state.set(
             "formFilters[createdAt]",
             new Date(data.createdAt).toISOString()
           )
         : state.delete("formFilters[createdAt]");
+
+      state.set("page", "1"); //make sure the table starts from the first page
 
       return state;
     });

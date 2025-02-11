@@ -29,9 +29,11 @@ interface UseFormWithQueryProps<T extends FieldValues, R>
 }
 
 /**
- * React hook form
- * Zod
- * React query (mutate)
+ * @param schema zod schema with rules to validate the form before submit
+ * @param transformFn function to transform the form data before submit
+ * @param mutationFn function to execute the mutation
+ * @param mutationOptions options for the mutation executate extra action in the side effects (onSuccess, onError...)
+ * @param queryKeysToInvalidate query keys to invalidate on onSuccess side effect
  */
 const useMyForm = <T extends FieldValues, R>({
   schema,
