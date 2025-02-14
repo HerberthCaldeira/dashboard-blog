@@ -1,14 +1,3 @@
-import { FieldErrors } from "react-hook-form";
-
-interface InputProps {
-  name: string;
-  label: string;
-  type?: "text" | "email" | "time" | "password";
-  placeholder?: string;
-  className?: string;
-  errors?: FieldErrors;
-}
-
 interface SelectProps extends InputProps {
   options: {
     value: string;
@@ -16,8 +5,4 @@ interface SelectProps extends InputProps {
   }[];
 }
 
-interface ReactSelectProps extends SelectProps {
-  isMulti: boolean;
-}
-
-export type { InputProps, SelectProps, ReactSelectProps };
+export type { SelectProps };

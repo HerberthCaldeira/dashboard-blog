@@ -1,3 +1,8 @@
+## http
+
+fluxo da request
+axios.interceptors -> hook/function
+
 ## TODO: Permissões
 
 3 tipos de páginas

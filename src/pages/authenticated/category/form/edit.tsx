@@ -18,7 +18,7 @@ export default function Edit() {
     id: params.id,
   });
 
-  const { formMethods, onSubmit, errors, isSubmitting } = useMyForm({
+  const { formMethods, onSubmit, isSubmitting } = useMyForm({
     schema: categorySchema,
     transformFn: (data) => {
       console.log("transformFn", data);
@@ -61,7 +61,6 @@ export default function Edit() {
         <Form
           formMethods={formMethods}
           onSubmit={onSubmit}
-          errors={errors}
           isSubmitting={isSubmitting}
         />
       )}

@@ -3,11 +3,11 @@ import useMyForm from "@/components/my/form/react-hook-form";
 import actions from "@/actions";
 import Form from ".";
 import { useNavigate } from "react-router-dom";
-import { categorySchema } from "../schemas/zodSchema";
+import { categorySchema, TCategoryFormFields } from "../schemas/zodSchema";
 
 export default function Create() {
   const navigate = useNavigate();
-  const { formMethods, onSubmit, errors, isSubmitting, submitError } =
+  const { formMethods, onSubmit, errors, isSubmitting } =
     useMyForm({
       schema: categorySchema,
       mutationFn: actions.category.create,

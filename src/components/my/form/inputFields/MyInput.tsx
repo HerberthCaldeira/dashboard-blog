@@ -1,19 +1,28 @@
 import { useFormContext } from "react-hook-form";
-import { InputProps } from "./fieldsTypes";
 
 import { ErrorMessage } from "@hookform/error-message";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+interface InputProps {
+  name: string;
+  label: string;
+  type?: "text" | "email" | "time" | "password";
+  placeholder?: string;
+  className?: string;
+}
 
 export default function MyInput({
   name,
   label,
   type,
   placeholder,
-  errors,
   className,
 }: InputProps) {
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <div>
@@ -24,7 +33,7 @@ export default function MyInput({
         {label}
       </Label>
       <Input
-        className={className}
+        className={className + (errors?.[name] ? " border-red-500" : "")}
         type={type}
         placeholder={placeholder}
         {...register(name)}

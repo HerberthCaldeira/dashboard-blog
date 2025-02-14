@@ -14,6 +14,7 @@ export const getRequest = async <TResponse>(
 ): Promise<TResponse> => {
   try {
     const response = await axios.get<TResponse>(url, config);
+    console.log("response http", response);
     return response.data;
   } catch (error) {
     console.log("catch::getRequest", error);

@@ -1,18 +1,31 @@
-import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import ReactSelect from "react-select";
-import { ReactSelectProps } from "../../../../../components/my/form/inputFields/fieldsTypes";
+import Select from "react-select";
 import { ErrorMessage } from "@hookform/error-message";
 
-// Select Input using React Select library
-export const ReactSelectInput: FC<ReactSelectProps> = ({
+interface MyReactSelectProps {
+  name: string;
+  label: string;
+  options: { value: string; label: string }[];
+  isMulti?: boolean;
+  placeholder?: string;
+}
+
+/**
+ * Select Input using React Select library
+ *
+ *
+ */
+export const MyReactSelect = ({
   name,
   label,
-  errors,
   options,
   isMulti,
-}) => {
-  const { control } = useFormContext();
+  placeholder = "Select an option",
+}: MyReactSelectProps) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
   return (
     <div>
       <div>
@@ -21,7 +34,8 @@ export const ReactSelectInput: FC<ReactSelectProps> = ({
           control={control}
           name={name}
           render={({ field: { onChange } }) => (
-            <ReactSelect
+            <Select
+              placeholder={placeholder}
               isMulti={isMulti}
               onChange={onChange}
               options={options}

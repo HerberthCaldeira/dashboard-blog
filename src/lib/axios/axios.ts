@@ -13,25 +13,17 @@ const axios = Axios.create({
  * Intercept the response and handle redirects
  */
 axios.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log("interceptors::response", response);
+    return response;
+  },
   (error: AxiosError) => {
     console.log("axios::interceptors::error", error);
-    
+
     if (
       isAxiosError(error) &&
       [419, 401].includes(error?.response?.status || 0)
     ) {
-      window.console.log("Request canceled ::", error.message);
-      window.history.pushState({}, "", "/login");
-      // communicate to Routes that URL has changed
-      const navEvent = new PopStateEvent("popstate");
-      window.dispatchEvent(navEvent);
-    }
-
-    /**
-     * Error 422 - validation
-     */
-    if (isAxiosError(error) && [422].includes(error?.response?.status || 0)) {
       window.console.log("Request canceled ::", error.message);
       window.history.pushState({}, "", "/login");
       // communicate to Routes that URL has changed

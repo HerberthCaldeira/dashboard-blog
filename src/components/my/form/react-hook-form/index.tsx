@@ -6,24 +6,16 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { z } from "zod";
-
-interface ApiResponse<R> {
-  status: number;
-  data: R;
-}
-
-interface ApiError {
-  message: string;
-}
+import { AxiosError, AxiosResponse } from "axios";
 
 interface UseFormWithQueryProps<T extends FieldValues, R>
   extends Omit<UseFormProps<T>, "resolver"> {
   schema: z.ZodType<T>;
+  mutationFn: (data: any) => Promise<AxiosResponse>;
   transformFn?: <TFormData>(data: TFormData) => any;
-  mutationFn: (data: any) => Promise<ApiResponse<R>>;
   mutationOptions?: Omit<
-    UseMutationOptions<ApiResponse<R>, ApiError, T>,
-    "mutationFn"
+  UseMutationOptions<AxiosResponse, AxiosError, T>,
+  "mutationFn"
   >;
   queryKeysToInvalidate?: any[][];
 }
@@ -45,30 +37,36 @@ const useMyForm = <T extends FieldValues, R>({
 }: UseFormWithQueryProps<T, R>) => {
   const queryClient = useQueryClient();
 
+  /**
+   * Make Form
+   */
   const formMethods = useForm<T>({
     ...formProps,
     resolver: zodResolver(schema),
   });
 
+  /**
+   * Make submit mutation
+   */
   const mutation = useMutation({
     mutationFn,
     ...mutationOptions,
     onSuccess: (data, variables, context) => {
       if (queryKeysToInvalidate) {
         queryKeysToInvalidate.forEach((key: Array<any>) => {
-          console.log("key", key);
+          console.log("queryKeysToInvalidate::key", key);
           queryClient.invalidateQueries(key);
         });
       }
       //formMethods.reset();
       mutationOptions?.onSuccess?.(data, variables, context);
     },
-    onError: (error) => {
+    onError: (error: AxiosError<T>) => {
       console.log("useMyForm::error", error);
 
-      if (error?.response.status !== 422) throw error;
+      if (error?.response?.status !== 422) throw error;
 
-      const serverErrors = error?.response.data.errors;
+      const serverErrors = error?.response?.data?.errors;
 
       for (const key in serverErrors) {
         formMethods.setError(key, {
@@ -79,6 +77,9 @@ const useMyForm = <T extends FieldValues, R>({
     },
   });
 
+  /**
+   * Combine form and mutation
+   */
   const onSubmit = formMethods.handleSubmit(async (data) => {
     const transformedData = transformFn ? transformFn(data) : data;
     console.log("transformedData", transformedData);

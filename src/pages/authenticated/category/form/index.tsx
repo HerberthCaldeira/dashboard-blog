@@ -1,26 +1,31 @@
 import { Button } from "@/components/ui/button";
 import MyInput from "@/components/my/form/inputFields/MyInput";
-import { FormProvider } from "react-hook-form";
+import {
+  FieldValues,
+  FormProvider,
+  FormState,
+  UseFormReturn,
+} from "react-hook-form";
+import { TCategoryFormFields } from "../schemas/zodSchema";
+import SubmitButton from "@/components/my/buttons/SubmitButton";
 
-export default function Form(props: any) {
-  const { formMethods, onSubmit, errors, isSubmitting } = props;
+interface IParams {
+  formMethods: UseFormReturn<TCategoryFormFields>;
+  onSubmit: () => void;
+  errors: FormState<FieldValues>["errors"];
+  isSubmitting: FormState<FieldValues>["isSubmitting"];
+}
 
+export default function Form({ formMethods, onSubmit, isSubmitting }: IParams) {
   return (
     <>
       <div className="container mx-auto">
         <FormProvider {...formMethods}>
           <form onSubmit={onSubmit}>
-            <MyInput
-              name={"name"}
-              label={"nome"}
-              type={"text"}
-              errors={errors}
-            />
+            <MyInput name={"name"} label={"nome"} type={"text"} />
 
             <div className="flex mt-2">
-              <Button variant="outline" type="submit">
-                {isSubmitting ? "Saving..." : "Save"}
-              </Button>
+              <SubmitButton isSubmitting={isSubmitting} />
             </div>
           </form>
         </FormProvider>
