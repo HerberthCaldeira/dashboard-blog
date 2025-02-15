@@ -18,6 +18,7 @@ import App from "./App";
 import { default as EditCategory } from "./pages/authenticated/category/form/edit";
 import { default as CreateCategory } from "./pages/authenticated/category/form/create";
 import Login from "./pages/login";
+import EditPost from "./pages/authenticated/post/form/EditPost";
 
 const Fallback = () => {
   const error = useRouteError();
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "posts/new",
         element: <NewPost />,
+      },
+      {
+        path: "posts/:id/edit",
+        element: <EditPost />,
       },
     ],
   },

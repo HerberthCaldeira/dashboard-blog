@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import Select from "react-select";
 import { ErrorMessage } from "@hookform/error-message";
+import { Label } from "@/components/ui/label";
 
 interface MyReactSelectProps {
   name: string;
@@ -8,6 +9,7 @@ interface MyReactSelectProps {
   options: { value: string; label: string }[];
   isMulti?: boolean;
   placeholder?: string;
+  isClearable?: boolean;
 }
 
 /**
@@ -21,6 +23,7 @@ export const MyReactSelect = ({
   options,
   isMulti,
   placeholder = "Select an option",
+  isClearable = true,
 }: MyReactSelectProps) => {
   const {
     control,
@@ -29,12 +32,20 @@ export const MyReactSelect = ({
   return (
     <div>
       <div>
-        <label htmlFor={name}>{label}</label>
+        <Label
+          htmlFor={name}
+          className={errors?.[name] ? "text-destructive" : ""}
+        >
+          {label}
+        </Label>
+
         <Controller
           control={control}
           name={name}
-          render={({ field: { onChange } }) => (
+          render={({ field: { onChange, ...field } }) => (
             <Select
+              {...field}
+              isClearable={isClearable}
               placeholder={placeholder}
               isMulti={isMulti}
               onChange={onChange}
@@ -51,7 +62,11 @@ export const MyReactSelect = ({
           )}
         />
       </div>
-      <ErrorMessage errors={errors} name={name} />
+      <ErrorMessage
+        errors={errors}
+        name={name}
+        render={({ message }) => <p className="text-destructive">{message}</p>}
+      />
     </div>
   );
 };

@@ -7,69 +7,28 @@ export default function NewPost() {
   const { formMethods, onSubmit, isSubmitting } = useMyForm({
     schema: postSchema,
     mutationFn: actions.post.create,
+    transformFn: (data) => {
+      if (data?.category_id) {
+        data.category_id = Number(data.category_id.value);
+      }
+      return data;
+    },
   });
 
-  const { data: categories } = actions.category.useGetCategoryForSelectField();
-
-  console.log("categories", categories);
-
-  /** state for send taptip content */
-  // const [tapTipContent, setTapTipContent] = useState<string>("");
-
-  // let { isPending: isPendingGetCategories, data: categories } =
-  //   useGetCategoryForSelectField();
-
-  // const { mutate } = usePostPost();
-
-  // const setContentField = (html: string): void => {
-  //   setTapTipContent(html);
-  // };
-
-  // const onSubmit = (data) => {
-  //   const formData = new FormData();
-
-  //   for (const key in data) {
-  //     if (key === "category_id") {
-  //       formData.set(key, data[key].value);
-  //       continue;
-  //     }
-  //     formData.set(key, data[key]);
-  //   }
-
-  //   formData.set("content", tapTipContent);
-
-  //   mutate(formData, {
-  //     onSuccess: () => {
-  //       console.log("onSuccess");
-  //       reset();
-  //       //Invalidate and refetch
-  //       queryClient.invalidateQueries({ queryKey: postQKeys.all });
-  //     },
-  //     onError: (err) => {
-  //       console.log("onError: server error");
-  //       if (err instanceof AxiosError && err?.response.status === 422) {
-  //         const serverErrors = err?.response.data.errors;
-
-  //         for (const key in serverErrors) {
-  //           setError(key, {
-  //             type: "serverError",
-  //             message: serverErrors[key][0],
-  //           });
-  //         }
-  //       }
-  //     },
-  //   });
-  // };
+  const { data: categories, isSuccess: isSuccessCategories } =
+    actions.category.useGetCategoryForSelectField();
 
   return (
     <div>
       <div>Create Post</div>
-      <Form
-        formMethods={formMethods}
-        onSubmit={onSubmit}
-        isSubmitting={isSubmitting}
-        categories={categories}
-      />
+      {isSuccessCategories && (
+        <Form
+          formMethods={formMethods}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+          categories={categories || { data: [] }}
+        />
+      )}
     </div>
   );
 }
