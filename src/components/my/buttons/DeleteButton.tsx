@@ -12,7 +12,7 @@ import withReactContent from "sweetalert2-react-content";
 
 interface DeleteWithAlertButtonProps {
   toolTipText?: string;
-  title: string;
+  title?: string;
   text?: string;
   icon?: SweetAlertIcon;
   confirmButtonText?: string;
@@ -24,8 +24,8 @@ const SwalInstance = withReactContent(Swal);
 
 export function DeleteButton({
   toolTipText = "Delete",
-  title,
-  text,
+  title = "Delete item",
+  text = "Are you sure?",
   icon,
   confirmButtonText = "Delete",
   children,

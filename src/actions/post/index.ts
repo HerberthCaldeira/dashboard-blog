@@ -1,13 +1,15 @@
 import { create } from "./create";
 import { postQKeys } from "./queryKeys";
 import { update } from "./update";
-import useGetPost from "./useGetPost";
+import useGetPosts from "./useGetPosts";
 import useGetPostById from "./useGetPostById";
+import useDeletePost from "./useDeletePost";
 
 export default {
   create,
-  useGetPost,
+  useGetPosts,
   useGetPostById,
   querykeys: postQKeys,
   update,
+  useDeletePost,
 };

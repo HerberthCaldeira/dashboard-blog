@@ -1,19 +1,15 @@
 import { deleteRequest } from "@/lib/axios/http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { categoryKeys } from "./queryKeys";
-import { act } from "react";
 import actions from "..";
 
-const useDeleteCategory = () => {
+export default function useDeletePost() {
   const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: (id: number) => deleteRequest(`/api/category/${id}/delete`),
+  const { mutate, isSuccess, isPending } = useMutation({
+    mutationFn: (id: number) => deleteRequest(`/api/post/${id}/delete`),
     onSuccess: (data, variables, context) => {
-      // I will fire first
       console.log("useMutate::onSuccess");
       queryClient.invalidateQueries({
-        queryKey: actions.category.querykeys.all,
+        queryKey: actions.post.querykeys.all,
       });
     },
     onError: (error, variables, context) => {
@@ -28,7 +24,7 @@ const useDeleteCategory = () => {
 
   return {
     mutate,
+    isSuccess,
+    isPending,
   };
-};
-
-export default useDeleteCategory;
+}

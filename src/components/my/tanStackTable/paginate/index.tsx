@@ -1,4 +1,4 @@
-export default function Index({ table }) {
+export default function Pagination({ table }) {
   // console.log("pagination render");
   return (
     <div className="flex justify-between">

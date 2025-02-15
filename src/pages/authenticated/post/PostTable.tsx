@@ -4,10 +4,11 @@ import { EditButton } from "@/components/my/buttons/EditButton";
 import TanStackTable from "@/components/my/tanStackTable";
 import useTableTanStack from "@/components/my/tanStackTable/hooks/useTableTanStack";
 import Pagination from "@/components/my/tanStackTable/paginate";
+
 import { useMemo } from "react";
 
-export default function CategoryTable({ apiResponse }) {
-  const { mutate: deleteMutate } = actions.category.useDeleteCategory();
+export default function PostTable({ posts }) {
+  const { mutate: deleteMutate } = actions.post.useDeletePost();
 
   const handlerDelete = (id: number) => {
     deleteMutate(id, {
@@ -50,23 +51,16 @@ export default function CategoryTable({ apiResponse }) {
         },
       },
       {
-        header: "Name",
-        accessorKey: "name",
+        header: "Title",
+        accessorKey: "title",
       },
       {
         header: "Actions",
-        cell: ({ cell, row }) => {
+        cell: ({ row }) => {
           return (
             <div>
-              {" "}
-              <EditButton to={`/dashboard/category/${row.original.id}/edit`} />
-              <DeleteButton
-                onDelete={() => handlerDelete(row.original.id)}
-                title={"Delete"}
-                text={"Are you sure you want to delete this category?"}
-                icon={"warning"}
-                confirmButtonText={"Delete"}
-              />
+              <EditButton to={`/dashboard/posts/${row.original.id}/edit`} />
+              <DeleteButton onDelete={() => handlerDelete(row.original.id)} />
             </div>
           );
         },
@@ -77,16 +71,13 @@ export default function CategoryTable({ apiResponse }) {
 
   const { table } = useTableTanStack({
     columns,
-    apiResponse,
+    apiResponse: posts,
   });
 
   return (
     <div>
-      CategoryTable
-      <div>
-        <TanStackTable table={table} />
-        <Pagination table={table} />
-      </div>
+      <TanStackTable table={table} />
+      <Pagination table={table} />
     </div>
   );
 }

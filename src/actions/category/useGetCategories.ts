@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { categoryKeys } from "./queryKeys";
 import { getRequest } from "../../lib/axios/http";
 import type { ICategoryFormFilters } from "@/pages/authenticated/category/types";
+import actions from "..";
 
 interface IUseGetCategories {
   formFilters: ICategoryFormFilters;
@@ -18,7 +18,11 @@ const useGetCategories = ({
   sorting,
 }: IUseGetCategories) => {
   const { data, error, isError, isPending, isSuccess } = useQuery({
-    queryKey: categoryKeys.paginate({ formFilters, page, sorting }),
+    queryKey: actions.category.querykeys.paginate({
+      formFilters,
+      page,
+      sorting,
+    }),
     queryFn: async () =>
       await getRequest("/api/category", {
         params: {
