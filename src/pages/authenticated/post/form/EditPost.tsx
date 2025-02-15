@@ -29,6 +29,7 @@ export default function EditPost() {
         payload: data,
       };
     },
+    queryKeysToInvalidate: [actions.post.keys.all],
   });
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function EditPost() {
   return (
     <div>
       <div>Edit Post</div>
-      {isSuccessCategories && (
+      {isSuccessCategories && isSuccessGetPostById && (
         <Form
           formMethods={formMethods}
           onSubmit={onSubmit}

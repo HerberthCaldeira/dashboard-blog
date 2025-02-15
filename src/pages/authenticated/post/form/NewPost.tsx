@@ -13,6 +13,7 @@ export default function NewPost() {
       }
       return data;
     },
+    queryKeysToInvalidate: [actions.post.keys.all],
   });
 
   const { data: categories, isSuccess: isSuccessCategories } =

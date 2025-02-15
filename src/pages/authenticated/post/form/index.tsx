@@ -29,7 +29,6 @@ export default function Form({
     getValues,
     formState: { errors },
   } = formMethods;
-  console.log("getValues", getValues(), errors);
 
   return (
     <>
