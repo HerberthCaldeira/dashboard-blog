@@ -2,10 +2,11 @@ import useMyForm from "@/components/my/form/react-hook-form";
 import { postSchema } from "../schemas/zodSchema";
 import Form from ".";
 import actions from "@/actions";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function EditPost() {
+  const navigate = useNavigate();
   const params = useParams();
 
   const { data: categories, isSuccess: isSuccessCategories } =
@@ -29,7 +30,16 @@ export default function EditPost() {
         payload: data,
       };
     },
-    queryKeysToInvalidate: [actions.post.keys.all],
+    mutationOptions: {
+      onSuccess: (data, variables, context) => {
+        console.log("data", data);
+        console.log("variables", variables);
+        console.log("context", context);
+        //formMethods.reset(); working fine
+        //navigate("/dashboard/posts");
+      },
+    },
+    queryKeysToInvalidate: [actions.post.querykeys.all],
   });
 
   useEffect(() => {

@@ -7,22 +7,21 @@ import { categorySchema, TCategoryFormFields } from "../schemas/zodSchema";
 
 export default function Create() {
   const navigate = useNavigate();
-  const { formMethods, onSubmit, errors, isSubmitting } =
-    useMyForm({
-      schema: categorySchema,
-      mutationFn: actions.category.create,
-      queryKeysToInvalidate: [categoryKeys.all],
-      mutationOptions: {
-        onSuccess: (data, variables, context) => {
-          console.log("data", data);
-          console.log("variables", variables);
-          console.log("context", context);
-          //formMethods.reset(); working fine
-          navigate("/dashboard/category");
-        },
+  const { formMethods, onSubmit, errors, isSubmitting } = useMyForm({
+    schema: categorySchema,
+    mutationFn: actions.category.create,
+    queryKeysToInvalidate: [actions.category.querykeys.all],
+    mutationOptions: {
+      onSuccess: (data, variables, context) => {
+        console.log("data", data);
+        console.log("variables", variables);
+        console.log("context", context);
+        //formMethods.reset(); working fine
+        navigate("/dashboard/category");
       },
-      defaultValues: { id: null, name: "" },
-    });
+    },
+    defaultValues: { id: null, name: "" },
+  });
 
   return (
     <>

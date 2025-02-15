@@ -30,6 +30,8 @@ export default function Form({
     formState: { errors },
   } = formMethods;
 
+  console.log("getValues::errors", getValues(), errors);
+
   return (
     <>
       <FormProvider {...formMethods}>

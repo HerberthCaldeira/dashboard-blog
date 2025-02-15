@@ -8,6 +8,6 @@ export default {
   create,
   useGetPost,
   useGetPostById,
-  keys: postQKeys,
+  querykeys: postQKeys,
   update,
 };

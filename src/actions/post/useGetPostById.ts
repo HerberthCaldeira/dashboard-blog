@@ -7,7 +7,7 @@ interface IProps {
 }
 export default function useGetPostById({ id }: IProps) {
   const { data, error, isError, isPending, isSuccess } = useQuery({
-    queryKey: actions.post.keys.useGetPostId(id),
+    queryKey: actions.post.querykeys.useGetPostId(id),
     queryFn: async () => await getRequest(`/api/post/${id}/edit`),
   });
 
