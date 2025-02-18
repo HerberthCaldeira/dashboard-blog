@@ -55,6 +55,10 @@ export default function PostTable({ posts }) {
         accessorKey: "title",
       },
       {
+        header: "CreatedAt",
+        accessorKey: "created_at",
+      },
+      {
         header: "Actions",
         cell: ({ row }) => {
           return (

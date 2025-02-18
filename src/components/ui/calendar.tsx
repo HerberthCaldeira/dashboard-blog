@@ -16,8 +16,8 @@ function Calendar({
   ...props
 }: CalendarProps) {
   return (
-    <DayPicker
-      locale={ptBR}
+    <DayPicker    
+      locale={ptBR}      
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{

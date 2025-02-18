@@ -59,7 +59,7 @@ export default function MyCalendar({ name, label = "Date" }) {
             </PopoverContent>
           </Popover>
           <FormDescription>
-            Your date of birth is used to calculate your age.
+            {/* Your date of birth is used to calculate your age. */}
           </FormDescription>
           <FormMessage />
         </FormItem>

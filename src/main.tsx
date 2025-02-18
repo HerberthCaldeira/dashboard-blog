@@ -10,7 +10,7 @@ import ErrorPage from "./pages/Error";
 import Dashboard from "./pages/authenticated/dashboard/Dashboard";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Category from "./pages/authenticated/category";
-import Posts from "./pages/authenticated/post/Index";
+import Posts from "./pages/authenticated/post";
 import NewPost from "./pages/authenticated/post/form/NewPost";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
 import "./index.css";

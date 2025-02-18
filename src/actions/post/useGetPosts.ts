@@ -9,14 +9,24 @@ interface IUseGetPosts {
     id: string;
     desc: boolean;
   }[];
+  formFilters: {
+    search: string;
+    createdAt: string;
+    category_id: string;
+  };
 }
 
-export default function useGetPosts({ page, sorting }: IUseGetPosts) {
+export default function useGetPosts({
+  formFilters,
+  page,
+  sorting,
+}: IUseGetPosts) {
   const { data, error, isError, isPending } = useQuery({
-    queryKey: actions.post.querykeys.paginate({ page, sorting }),
+    queryKey: actions.post.querykeys.paginate({ formFilters, page, sorting }),
     queryFn: async () =>
       await getRequest("/api/post", {
         params: {
+          formFilters,
           page,
           sorting,
         },

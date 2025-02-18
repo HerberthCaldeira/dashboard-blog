@@ -1,10 +1,11 @@
 export const postQKeys = {
   all: ["posts"],
-  paginate: ({ sorting, page }: any) => [
+  paginate: ({ formFilters, page, sorting }: any) => [
     ...postQKeys.all,
     "post::paginate",
-    sorting,
+    formFilters,
     page,
+    sorting,
   ],
   useGetPostId: (id: string) => [...postQKeys.all, id, "edit"],
 };
