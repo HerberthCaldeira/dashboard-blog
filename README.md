@@ -47,6 +47,10 @@ Exemplo:
     </div>
     ```
 
+## Error Handling
+
+https://www.youtube.com/watch?v=OQQAv8t3bfc&ab_channel=CosdenSolutions
+
 ---
 
 # React + TypeScript + Vite

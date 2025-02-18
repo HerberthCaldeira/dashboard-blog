@@ -53,35 +53,29 @@ export default function PostTableFilter() {
   };
 
   return (
-    <div className="container mx-auto">
-      CategoryFilter
-      <div className="border-2 border-indigo-400">
-        <FormProvider {...formFilterMethods}>
-          <form onSubmit={formFilterMethods.handleSubmit(handlerSubmit)}>
-            <div className="grid grid-cols-3">
-              <div className="px-2">
-                <MyCalendar name="createdAt" />
-              </div>
-              <div className="px-2">
-                <MyReactSelect
-                  name="category_id"
-                  label="Category"
-                  options={categories?.data || []}
-                  placeholder="Category"
-                />
-              </div>
-              <div className="px-2">
-                <MyInput type="text" name={"search"} label={"search"} />
-              </div>
+    <div className="">
+      <FormProvider {...formFilterMethods}>
+        <form onSubmit={formFilterMethods.handleSubmit(handlerSubmit)}>
+          <div className="grid grid-cols-3 gap-2">
+            <MyCalendar name="createdAt" />
+
+            <MyReactSelect
+              name="category_id"
+              label="Category"
+              options={categories?.data || []}
+              placeholder="Category"
+            />
+
+            <MyInput type="text" name={"search"} label={"search"} />
+          </div>
+
+          <div className="flex justify-end">
+            <div>
+              <Button type="submit">submit</Button>
             </div>
-            <div className="flex justify-end">
-              <div>
-                <Button type="submit">submit</Button>
-              </div>
-            </div>
-          </form>
-        </FormProvider>
-      </div>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   );
 }

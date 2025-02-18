@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { postQKeys } from "./queryKeys";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getRequest } from "../../lib/axios/http";
 import actions from "..";
 
@@ -31,6 +30,7 @@ export default function useGetPosts({
           sorting,
         },
       }),
+    placeholderData: keepPreviousData,
   });
 
   return {

@@ -4,7 +4,6 @@ import PostTable from "./PostTable";
 import tableUrlParamsManagament from "@/components/my/tanStackTable/helpers/tableUrlParamsManagament";
 import { useSearchParams } from "react-router-dom";
 import PostTableFilter from "./PostTableFilter";
-import category from "@/actions/category";
 
 export default function Index() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,15 +34,21 @@ export default function Index() {
   }
 
   return (
-    <div className="m-8">
-      <CreateButton to={"/dashboard/posts/new"}>Create</CreateButton>
+    <div className="container mx-auto">
+      <div className="flex justify-end border-2 border-indigo-400 rounded p-4">
+        <CreateButton to={"/dashboard/posts/new"}>Create</CreateButton>
+      </div>
 
       {isPending ? (
         <div>LOADING</div>
       ) : (
-        <div>
-          <PostTableFilter />
-          <PostTable posts={data} />
+        <div className="mt-8 mb-8">
+          <div className="border-2 border-indigo-400 rounded p-4 mb-8">
+            <PostTableFilter />
+          </div>
+          <div className="border-2 border-indigo-400 rounded p-4">
+            <PostTable posts={data} />
+          </div>
         </div>
       )}
     </div>
