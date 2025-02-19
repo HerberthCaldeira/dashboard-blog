@@ -57,8 +57,20 @@ const handlePageQueryString = (page: string | null): number => {
   return p == 0 ? 1 : p;
 };
 
+/**
+ *  Transform a query string to a page number
+ * @param pageSize
+ * @returns {int}
+ */
+const handlePageSizeQueryString = (pageSize: string | null): number => {
+  if (pageSize == null || !isInteger(pageSize)) return 15;
+  const p = parseInt(pageSize);
+  return p == 0 ? 15 : p;
+};
+
 export default {
   handlePageQueryString,
+  handlePageSizeQueryString,
   extractSortingArrayFromQueryString,
   makeQueryStringFromSortingArray,
 };

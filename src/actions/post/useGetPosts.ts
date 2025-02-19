@@ -4,6 +4,7 @@ import actions from "..";
 
 interface IUseGetPosts {
   page: number;
+  pageSize: number;
   sorting: {
     id: string;
     desc: boolean;
@@ -18,15 +19,22 @@ interface IUseGetPosts {
 export default function useGetPosts({
   formFilters,
   page,
+  pageSize,
   sorting,
 }: IUseGetPosts) {
   const { data, error, isError, isPending } = useQuery({
-    queryKey: actions.post.querykeys.paginate({ formFilters, page, sorting }),
+    queryKey: actions.post.querykeys.paginate({
+      formFilters,
+      page,
+      pageSize,
+      sorting,
+    }),
     queryFn: async () =>
       await getRequest("/api/post", {
         params: {
           formFilters,
           page,
+          pageSize,
           sorting,
         },
       }),

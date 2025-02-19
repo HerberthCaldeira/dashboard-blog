@@ -6,6 +6,7 @@ import actions from "..";
 interface IUseGetCategories {
   formFilters: ICategoryFormFilters;
   page: number;
+  pageSize: number;
   sorting: {
     id: string;
     desc: boolean;
@@ -15,12 +16,14 @@ interface IUseGetCategories {
 const useGetCategories = ({
   formFilters,
   page,
+  pageSize,
   sorting,
 }: IUseGetCategories) => {
   const { data, error, isError, isPending, isSuccess } = useQuery({
     queryKey: actions.category.querykeys.paginate({
       formFilters,
       page,
+      pageSize,
       sorting,
     }),
     queryFn: async () =>
@@ -28,6 +31,7 @@ const useGetCategories = ({
         params: {
           formFilters,
           page,
+          pageSize,
           sorting,
         },
       }),

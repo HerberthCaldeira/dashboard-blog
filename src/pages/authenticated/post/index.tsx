@@ -11,6 +11,10 @@ export default function Index() {
     searchParams.get("page")
   );
 
+  let pageSize = tableUrlParamsManagament.handlePageSizeQueryString(
+    searchParams.get("page_size")
+  );
+
   let sorting = tableUrlParamsManagament.extractSortingArrayFromQueryString(
     searchParams.get("sorting") ?? "id:asc"
   );
@@ -24,10 +28,11 @@ export default function Index() {
   const { data, error, isError, isPending } = useGetPosts({
     formFilters,
     page,
+    pageSize,
     sorting,
   });
 
-  console.log("data", data);
+  //console.log("data", data);
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;

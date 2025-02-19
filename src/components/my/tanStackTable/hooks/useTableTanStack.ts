@@ -19,7 +19,9 @@ const useTableTanStack = ({ columns, apiResponse }: ITanstackTable) => {
     pageIndex: tableUrlParamsManagament.handlePageQueryString(
       searchParams.get("page")
     ),
-    pageSize: 15,
+    pageSize: tableUrlParamsManagament.handlePageSizeQueryString(
+      searchParams.get("page_size")
+    ),
   });
 
   const [sorting, setSorting] = useState<
@@ -30,7 +32,9 @@ const useTableTanStack = ({ columns, apiResponse }: ITanstackTable) => {
   >(() => {
     const sortingParam = searchParams.get("sorting");
     return sortingParam
-      ? tableUrlParamsManagament.extractSortingArrayFromQueryString(sortingParam)
+      ? tableUrlParamsManagament.extractSortingArrayFromQueryString(
+          sortingParam
+        )
       : [{ id: "id", desc: false }];
   });
 
@@ -72,11 +76,11 @@ const useTableTanStack = ({ columns, apiResponse }: ITanstackTable) => {
       if (typeof updater !== "function") return;
 
       const newPageInfo = updater(table.getState().pagination);
-      //console.log("old pagination :: ", table.getState().pagination);
-      //console.log("new pagination :: ", newPageInfo, newPageInfo?.pageIndex);
+      console.log("old pagination :: ", table.getState().pagination);
+      console.log("new pagination :: ", newPageInfo, newPageInfo?.pageIndex);
       setSearchParams((state) => {
         state.set("page", newPageInfo?.pageIndex);
-
+        state.set("page_size", newPageInfo?.pageSize);
         return state;
       });
       setPagination(newPageInfo);

@@ -17,6 +17,10 @@ export default function Index() {
     searchParams.get("page")
   );
 
+  let pageSize = tableUrlParamsManagament.handlePageSizeQueryString(
+    searchParams.get("page_size")
+  );
+
   let sorting = tableUrlParamsManagament.extractSortingArrayFromQueryString(
     searchParams.get("sorting") ?? "id:asc"
   );
@@ -29,6 +33,7 @@ export default function Index() {
   } = actions.category.useGetCategories({
     formFilters,
     page,
+    pageSize,
     sorting,
   });
 
@@ -37,15 +42,22 @@ export default function Index() {
   }
 
   return (
-    <div className="m-8">
-      <CreateButton to="/dashboard/category/new">Create</CreateButton>
-
-      <CategoryTableFilter />
+    <div className="container mx-auto">
+      <div className="flex justify-end border-2 border-indigo-400 rounded p-4">
+        <CreateButton to="/dashboard/category/new">Create</CreateButton>
+      </div>
 
       {isPending ? (
         <div>Loading...</div>
       ) : (
-        <CategoryTable apiResponse={apiResponse} />
+        <div className="mt-8 mb-8">
+          <div className="border-2 border-indigo-400 rounded p-4 mb-8">
+            <CategoryTableFilter />
+          </div>
+          <div className="border-2 border-indigo-400 rounded p-4 ">
+            <CategoryTable apiResponse={apiResponse} />
+          </div>
+        </div>
       )}
     </div>
   );

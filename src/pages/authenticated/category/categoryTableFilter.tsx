@@ -38,18 +38,21 @@ export default function CategoryTableFilter() {
 
   return (
     <div>
-      CategoryFilter
-      <div className="border-2 border-indigo-400">
-        <FormProvider {...formFilterMethods}>
-          <form onSubmit={formFilterMethods.handleSubmit(handlerSubmit)}>
-            <div className="flex ">
-              <MyCalendar name="createdAt" />
+      <FormProvider {...formFilterMethods}>
+        <form onSubmit={formFilterMethods.handleSubmit(handlerSubmit)}>
+          <div className="flex gap-2 ">
+            <MyCalendar name="createdAt" />
+            <div className="flex-1">
               <MyInput type="text" name={"search"} label={"search"} />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <div>
               <Button type="submit">submit</Button>
             </div>
-          </form>
-        </FormProvider>
-      </div>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   );
 }

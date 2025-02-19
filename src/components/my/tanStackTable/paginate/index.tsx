@@ -1,5 +1,7 @@
+import { useSearchParams } from "react-router-dom";
+
 export default function Pagination({ table }) {
-  // console.log("pagination render");
+  const [searchParams, setSearchParams] = useSearchParams();
   return (
     <div className="flex justify-between">
       <button
@@ -31,7 +33,17 @@ export default function Pagination({ table }) {
       <select
         value={table.getState().pagination.pageSize}
         onChange={(e) => {
-          table.setPageSize(Number(e.target.value));
+          console.log("change pagesize");
+          table.setPagination({
+            pageSize: Number(e.target.value),
+            pageIndex: 1,
+          });
+
+          setSearchParams((state) => {
+            state.set("page", 1);
+            state.set("page_size", e.target.value);
+            return state;
+          });
         }}
       >
         {[10, 15, 20, 30, 40, 50].map((pageSize) => (

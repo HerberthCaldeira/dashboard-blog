@@ -82,11 +82,8 @@ export default function CategoryTable({ apiResponse }) {
 
   return (
     <div>
-      CategoryTable
-      <div>
-        <TanStackTable table={table} />
-        <Pagination table={table} />
-      </div>
+      <TanStackTable table={table} />
+      <Pagination table={table} />
     </div>
   );
 }
